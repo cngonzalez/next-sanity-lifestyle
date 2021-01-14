@@ -1,6 +1,6 @@
 export default {
-  title: "Page",
-  name: "page",
+  title: "Article",
+  name: "article",
   type: "document",
   fields: [
     {
@@ -24,18 +24,6 @@ export default {
         {type: "reference",
          to: [{type: "person"}]}
       ]
-    },
-    {
-      title: 'Start featuring page on:',
-      name: 'featuredArticleDate',
-      description: "Date to start featuring this article on (will be replaced by any article that is set to be featured on a date after this one)",
-      type: 'date',
-    },
-    {
-      title: 'Category', 
-      name: 'category',
-      type: 'reference', 
-      to: [{type: "category"}]
     },
     {
       title: 'Subsection', 

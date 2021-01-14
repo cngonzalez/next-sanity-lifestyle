@@ -1,18 +1,10 @@
 import {
-  Box,
-  Button,
   Card,
-  Code,
   Container,
   Flex,
-  Grid,
-  Heading,
-  Inline,
-  Label,
   Stack,
   Text,
 } from '@sanity/ui'
-import React from 'react'
 import { GetStaticProps } from 'next'
 import {Category} from '../types'
 import client from '../client'
@@ -26,8 +18,7 @@ function IndexPage({categories}: {categories: Category[]}) {
         <Stack space={[3, 4, 5]}>
           <Container width={0}>
             <Text muted size={[2, 3, 4]} style={{textAlign: 'center'}}>
-              Sanity is the ultimate content platform that helps teams dream big and deliver
-              quickly.
+              Coming soon!
             </Text>
           </Container>
         </Stack>
