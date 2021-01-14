@@ -11,6 +11,16 @@ export default {
       validation: (Rule) => Rule.required(),
     },
     {
+      title: "slug",
+      name: "slug",
+      type: "slug",
+      description: "The slug for this page",
+      options: {
+        source: "title",
+      },
+      validation: (Rule) => Rule.required(),
+    },
+    {
       title: 'Published date',
       name: 'publishedDate',
       description: "Date to start showing this article",

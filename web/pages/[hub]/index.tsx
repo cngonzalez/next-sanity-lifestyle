@@ -10,8 +10,8 @@ export default function Hub({categories, articles}
   : {categories: Category[], articles: ArticleExcerpt[]}) {
 
     const router = useRouter()
-    const hub = router.query.hub
     console.log(articles)
+    const hub = router.query.hub
     const articlePanes = articles.map(
       (article, i) => (
         <ArticlePane article={article} hub={hub} key={i} />)
@@ -45,7 +45,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const rawArticles = await client.fetch(`
       *[_type == "article"]{
           title, 
-          slug,
+          "slug": slug.current,
           content,
           "subsectionName": subsection->name,
           "imageRef": heroImage.asset._ref
