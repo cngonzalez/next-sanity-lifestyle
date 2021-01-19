@@ -15,9 +15,11 @@ export function NavBar({categories, selectedCategoryName}
   return (
       <Card borderBottom paddingTop={5} paddingBottom={1} style={{textAlign: 'center'}}>
         <Stack space={5}>
-        <Heading size={[2, 3, 4, 5]}>
-          <span style={{fontWeight: 'lighter'}}>Life</span>styled.
-        </Heading>
+          <Link href="/">
+            <Heading size={[2, 3, 4, 5]}>
+              <span style={{fontWeight: 'lighter'}}>Life</span>styled.
+            </Heading>
+          </Link>
         <Inline space={[4,4,5]} style={{textAlign: 'center'}}>
           { navButtons }
         </Inline>

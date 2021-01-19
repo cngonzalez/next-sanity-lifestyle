@@ -1,7 +1,7 @@
 import { Grid } from '@sanity/ui'
 import { GetStaticPaths, GetStaticProps } from 'next'
-import client from '../../client'
-import { useRouter } from 'next/router';
+import { client } from '$sanityUtils'
+import { useRouter } from 'next/router'
 import { NavBar, ArticlePane } from '$components'
 import { Category, ArticleExcerpt } from '../../types'
 

@@ -17,7 +17,8 @@
     "paths": {
       "$components": ["./components"],
       "$pageComponents": ["./components/page-components"],
-      "$theme": ["./theme"]
+      "$theme": ["./theme"],
+      "$sanityUtils": ["./utils/sanity"]
     }
   },
   "include": [

@@ -14,19 +14,21 @@ export function ArticlePane({article, hub}
     //temp fix, be more rigorous here
     const excerpt = article.content[0].children[0].text.split(" ").slice(0,10).join(" ")
     return (
-      <Link href={`/article-temp/${article.slug}`}>
-        <Box padding={2}>
-          <img src={urlFor(article.imageRef)
-            .width(300)
-            .height(300)
-            }/>
-          <Heading size={1}>
-            {article.title}
-          </Heading>
-          <Text>
-            { `${excerpt}...` }
-          </Text>
-        </Box>
-      </Link>
+        <Link href={`/article-temp/${article.slug}`}>
+          <Stack space={2}>
+            <Box padding={2}>
+              <img src={urlFor(article.imageRef)
+                .width(300)
+                .height(300)
+                }/>
+             </Box>
+              <Heading size={1}>
+                {article.title}
+              </Heading>
+              <Text>
+                { `${excerpt}...` }
+              </Text>
+            </Stack>
+          </Link>
     )
 }
