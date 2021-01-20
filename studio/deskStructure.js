@@ -1,43 +1,56 @@
 import S from '@sanity/desk-tool/structure-builder'
+import client from 'part:@sanity/base/client'
 
-export default () =>
-  S.list()
-    .title('Content')
-    .items(
-      // S.documentTypeListItems()
-      [S.listItem()
-        .title('Hub')
+async function categoriesToListItems() {
+const query = `*[_type=='category']{
+    name, _id,
+    'subsections': *[_type=='subsection' && references(^._id)]{name, _id} 
+    }`
+  const categories = await client.fetch(query)
+  return categories.map(cat => (
+      S.listItem()
+        .title(cat.name)
         .child(
-            S.documentList()
-              .title("Hubs")
-              .filter("_type == 'category'"),
-        ),
-        S.listItem()
-          .title('Subsections')
-          .child(
-              S.documentList()
-                .title("Subsections")
-                .filter("_type == 'subsection'"),
-          ),
-        S.listItem()
-          .title('All Articles')
-          .child(
-              S.documentList()
-                .title("Articles")
-                .filter("_type == 'article'"),
-          ),
-        S.listItem()
-          .title('Products')
-          .child(
-              S.documentList()
-                .title("Products")
-                .filter("_type == 'product'"),
-          ),
-
-
-      ],
-
-      //have subsections be next level
-      //have articles
-//..documentTypeList.getItems()
+          S.list()
+            .title(cat.name)
+            .items([
+              S.documentListItem()
+                .schemaType('category')
+                .title(`${cat.name} Category/Hub Options`)
+                .id(cat._id)
+                .child(
+                  S.document()
+                    .schemaType('category')
+                    .documentId(cat._id)
+                    .views([S.view.form()])
+              ),
+              ...createSubsectionListItems(cat.subsections)
+            ]) 
+        ) 
     )
+  ) 
+}
+
+function createSubsectionListItems(subsections) {
+  return subsections.map(sub => (
+      S.listItem()
+        .title(sub.name)
+        .child(
+          S.documentList()
+          .title(sub.name)
+          .schemaType("article")
+          .filter("subsection._ref == $id")
+          .params({id: sub._id})
+        ) 
+      )
+    )
+}
+
+async function buildList() {
+  return (
+    S.list()
+    .title('Content')
+    .items(await categoriesToListItems())
+  )
+}
+export default buildList;

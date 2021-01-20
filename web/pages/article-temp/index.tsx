@@ -1,5 +1,5 @@
 import { GetStaticProps } from 'next'
-import client from '../../client'
+import { sanityClient } from '$sanityUtils'
 import { NavBar } from '$components'
 
 
@@ -14,7 +14,7 @@ export default function ArticlePage() {
 }
 
 export const getStaticPaths: GetStaticPaths = async (context) => {
-  const articleSlugs = await client.fetch(
+  const articleSlugs = await sanityClient.fetch(
     `*[_type == "article"]{'slug': slug.current}`)
 
   const paths = {paths: articleSlugs.map(

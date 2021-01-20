@@ -2,7 +2,7 @@ import { GetStaticProps } from 'next'
 import { NavBar } from '$components'
 import { Stack, Card, Heading, Text, Container } from '@sanity/ui'
 import { Category } from '../../types'
-import { client, urlFor } from '$sanityUtils'
+import { sanityClient, urlFor } from '$sanityUtils'
 import BlockContent from '@sanity/block-content-to-react'
 
 export default function ArticlePage(
@@ -33,7 +33,7 @@ export default function ArticlePage(
 }
 
 export const getStaticPaths: GetStaticPaths = async (context) => {
-  const articleSlugs = await client.fetch(
+  const articleSlugs = await sanityClient.fetch(
     `*[_type == "article"]{'slug': slug.current}`)
 
   const paths = {paths: articleSlugs.map(
@@ -47,7 +47,7 @@ export const getStaticPaths: GetStaticPaths = async (context) => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
   // && slug.current == ${context.params.hub}
-  const article = await client.fetch(`
+  const article = await sanityClient.fetch(`
       *[_type == "article"]{
           title, 
           "slug": slug.current,
@@ -59,7 +59,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   return ({
     props: {
       //later do this in just one query?
-      categories: await client.fetch(`*[_type == "category"]{name,'slug': slug.current}`),
+      categories: await sanityClient.fetch(`*[_type == "category"]{name,'slug': slug.current}`),
       article: article
     }
   })

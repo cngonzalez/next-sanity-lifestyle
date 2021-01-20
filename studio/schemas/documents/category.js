@@ -19,6 +19,21 @@ export default {
         source: "name",
       },
       validation: (Rule) => Rule.required(),
+    },
+    {
+      title: "Featured Article",
+      name: "featuredArticle",
+      description: "The featured article for this category",
+      type: "reference",
+      to: [{type: "article"}],
+      options: {
+        filter: ({document}) => {
+          return {
+            filter: "subsection._ref in *[_type == 'subsection' && category._ref == $id]._id",
+            params: {id: document._id}
+          }
+        }
+      },
     }
   ]
 }

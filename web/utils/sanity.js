@@ -9,7 +9,7 @@ const config = {
   //TODO: put everything in env
   projectId: 'rrw497vy',
   dataset: 'production', 
-  useCdn: false 
+useCdn: false //check if production
 }
 
 export const sanityClient = createClient(config);
