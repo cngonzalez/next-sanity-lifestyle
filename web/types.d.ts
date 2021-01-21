@@ -6,7 +6,13 @@ export type Category = {
 export type ArticleExcerpt = {
   title: string,
   slug: string,
-  subsectionName: string,
-  imageRef: string,
-  content: any[] | any
+  imageRef: string
+  subsectionName: string?,
+  content: any[] | any?
+}
+
+export type SubsectionArticles = {
+  name: string,
+  slug: string,
+  articles: ArticleExcerpt[]
 }
