@@ -1,11 +1,11 @@
 import {Heading, Stack, Box } from '@sanity/ui'
-import {ArticleExcerpt} from '../types'
+import {Article} from '../types'
 import Link from 'next/link'
 import BlockContent from '@sanity/block-content-to-react'
 import { urlFor } from '$sanityUtils'
 
 export function ArticlePane({article, hub, height}
-  : {article: ArticleExcerpt, hub: string, height: Integer}) {
+  : {article: Article, hub: string, height: Integer}) {
     return (
       <Box>
         <Link href={`/article-temp/${article.slug}`}>

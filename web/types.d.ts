@@ -3,7 +3,7 @@ export type Category = {
   slug: string
 }
 
-export type ArticleExcerpt = {
+export type Article = {
   title: string,
   slug: string,
   imageRef: string
@@ -14,5 +14,13 @@ export type ArticleExcerpt = {
 export type SubsectionArticles = {
   name: string,
   slug: string,
-  articles: ArticleExcerpt[]
+  articles: Article[]
+}
+
+export type ListItem = {
+  _key: string,
+  _type: string,
+  orientation: string,
+  text: any[] | any?,
+  title: string
 }

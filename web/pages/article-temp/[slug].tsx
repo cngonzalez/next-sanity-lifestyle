@@ -1,13 +1,17 @@
 import { GetStaticProps } from 'next'
 import { NavBar } from '$components'
 import { Stack, Card, Heading, Text, Container } from '@sanity/ui'
-import { Category } from '../../types'
-import { sanityClient, urlFor } from '$sanityUtils'
+import { Category, Article } from '../../types'
+import { sanityClient, urlFor, PortableText } from '$sanityUtils'
+import { handleGroupedItems } from '$helpers'
 import BlockContent from '@sanity/block-content-to-react'
 
 export default function ArticlePage(
   {categories, article}
-    : {categories: Category[], article: any[] | any }) {
+    : {categories: Category[], article: Article}) {
+      
+      let content = handleGroupedItems(
+        article.content, "listItem", {_key: "orientation", _value: "vertical"})
 
   return (
     <>
@@ -24,7 +28,7 @@ export default function ArticlePage(
                 { article.title }
               </Heading>
               <Text>
-                { article.content[0].children[0].text }
+                <PortableText blocks={content} />
               </Text>
           </Stack>
         </Card>

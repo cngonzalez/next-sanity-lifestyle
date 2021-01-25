@@ -1,11 +1,11 @@
 import {Heading, Stack, Box, Flex} from '@sanity/ui'
-import {ArticleExcerpt} from '../types'
+import {Article} from '../types'
 import Link from 'next/link'
 import BlockContent from '@sanity/block-content-to-react'
 import { urlFor } from '$sanityUtils'
 
 export function FeaturedArticle({article, hub}
-  : {article: ArticleExcerpt, hub: string}) {
+  : {article: Article, hub: string}) {
 
     return  (
       <Flex style={{maxHeight: "60vh"}}>

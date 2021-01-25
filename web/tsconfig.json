@@ -18,7 +18,8 @@
       "$components": ["./components"],
       "$pageComponents": ["./components/page-components"],
       "$theme": ["./theme"],
-      "$sanityUtils": ["./utils/sanity"]
+      "$sanityUtils": ["./utils/sanity"],
+      "$helpers": ["./utils/helpers"]
     }
   },
   "include": [

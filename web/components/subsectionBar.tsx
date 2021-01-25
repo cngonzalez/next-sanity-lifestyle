@@ -1,5 +1,5 @@
 import {Container, Heading, Card, Inline } from '@sanity/ui'
-import {ArticleExcerpt} from '../types'
+import {Article} from '../types'
 import Link from 'next/link'
 import client from '../client'
 import imageUrlBuilder from '@sanity/image-url'

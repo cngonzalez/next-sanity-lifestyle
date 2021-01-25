@@ -3,14 +3,14 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 import { sanityClient } from '$sanityUtils'
 import { useRouter } from 'next/router'
 import { NavBar, SubsectionBar, FeaturedArticle } from '$components'
-import { Category, ArticleExcerpt, SubsectionArticles } from '../../types'
+import { Category, Article, SubsectionArticles } from '../../types'
 import { groq } from "next-sanity";
 
 
 export default function Hub({categories, subsectionArticles, featuredArticle}
   : {categories: Category[],
     subsectionArticles: SubsectionArticles[],
-    featuredArticle: ArticleExcerpt}) {
+    featuredArticle: Article}) {
 
     const router = useRouter()
     const hub = router.query.hub
