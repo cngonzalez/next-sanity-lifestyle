@@ -2,8 +2,12 @@ import {Theme} from '@sanity/ui'
 import {createGlobalStyle, css} from 'styled-components'
 
 export const GlobalStyle = createGlobalStyle((props: {theme: Theme}) => {
+  //
+  //TODO: control in studio?
   const {theme} = props
-  const color = theme.sanity.color.base
+  const colorBase = theme.sanity.color.base
+  const color = {...colorBase.fg, bg: "#FCFCFF"}
+
 
   return css`
     @font-face {
@@ -48,5 +52,34 @@ export const GlobalStyle = createGlobalStyle((props: {theme: Theme}) => {
       -webkit-font-smoothing: antialiased;
       margin: 0;
     }
-  `
+
+  .hubHeader {
+    line-height: 0.3;
+    text-align: center;
+    width: 100%;
+  }
+  .hubHeader span {
+    display: inline-block;
+    position: relative;  
+  }
+  .hubHeader span:before,
+  .hubHeader span:after {
+    content: "";
+    position: absolute;
+    height: 5px;
+    border-bottom: 1px solid grey;
+    border-top: 1px solid grey;
+    top: 0;
+    width: 100%;
+  }
+  .hubHeader span:before {
+    right: 100%;
+    margin-right: 15px;
+  }
+  .hubHeader span:after {
+    left: 100%;
+    margin-left: 15px;
+  }
+
+      `
 })

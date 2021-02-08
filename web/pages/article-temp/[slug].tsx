@@ -1,6 +1,6 @@
 import { GetStaticProps } from 'next'
-import { NavBar } from '$components'
-import { Stack, Card, Heading, Text, Container, Flex } from '@sanity/ui'
+import { NavBar, SocialBar } from '$components'
+import { Stack, Card, Box, Heading, Text, Container, Flex } from '@sanity/ui'
 import { Category, Article } from '../../types'
 import { sanityClient, urlFor, PortableText } from '$sanityUtils'
 import { handleGroupedItems } from '$helpers'
@@ -16,27 +16,28 @@ export default function ArticlePage(
   return (
     <>
       <NavBar categories={categories} />
-      <Flex>
-        <Card padding={[1, 3, 4, 5]} flex={[1, 2, 3]}>
+      <Flex style={{backgroundColor:"#FCFCFF"}} >
+        <Box padding={[1, 3, 4, 5]} flex={[1, 2, 3]}>
           <Stack space={2}>
-            <Card style={{height: "20rem"}}>
-              <img src={urlFor(article.imageRef)
-                          .fit("crop")
-                          .auto("format")
-                          .url()} 
+            <Heading size={6} className="hubHeader">
+              <span>{ article.categoryName }</span>
+            </Heading>
+            <SocialBar />
+            <Box padding={3}>
+              <img src={urlFor(article.imageRef) } 
                 style={{width: "100%", height: "100%", objectFit: "cover"}}/>
-              </Card>
-              <Card padding={[1, 3, 4, 5]} flex={[1, 2, 3]}>
-                <Heading size={[2, 3, 4]} padding={4}j>
+              </Box>
+              <Box padding={[1, 3, 4, 5]} flex={[1, 2, 3]}>
+                <Heading size={[2, 3, 4]} padding={4}>
                   { article.title }
                 </Heading>
                 <Text>
                   <PortableText blocks={content} />
                 </Text>
-              </Card>
+              </Box>
             </Stack>
-          </Card>
-          <Card padding={1} flex={1} />
+          </Box>
+          <Box padding={1} flex={1} />
         </Flex>
     </>
   )
@@ -62,6 +63,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
           title, 
           "slug": slug.current,
           authors,
+        	"categoryName": subsection->category->name,
           content[]{
               ...,
               _type == 'listItem'=>{

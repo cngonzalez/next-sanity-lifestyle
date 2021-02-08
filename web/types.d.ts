@@ -8,6 +8,7 @@ export type Article = {
   slug: string,
   imageRef: string
   subsectionName: string?,
+  categoryName: string?,
   content: any[] | any?
 }
 

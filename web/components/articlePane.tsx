@@ -12,11 +12,11 @@ export function ArticlePane({article, hub, height}
           <Stack space={2}>
             <Box padding={2}>
               <img src={urlFor(article.imageRef)
-                .width(450)
-                .height(height)
+                .width(350)
+                .height(350)
                 }/>
              </Box>
-              <Heading size={1} margin={2}>
+            <Heading size={1} margin={2} style={{maxWidth: "300px", margin: "0 auto"}}>
                 {article.title}
               </Heading>
             </Stack>
