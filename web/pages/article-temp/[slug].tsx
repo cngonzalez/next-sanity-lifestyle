@@ -1,6 +1,6 @@
 import { GetStaticProps } from 'next'
 import { NavBar } from '$components'
-import { Stack, Card, Heading, Text, Container } from '@sanity/ui'
+import { Stack, Card, Heading, Text, Container, Flex } from '@sanity/ui'
 import { Category, Article } from '../../types'
 import { sanityClient, urlFor, PortableText } from '$sanityUtils'
 import { handleGroupedItems } from '$helpers'
@@ -16,22 +16,28 @@ export default function ArticlePage(
   return (
     <>
       <NavBar categories={categories} />
-        <Card padding={[3, 3, 4, 5]}>
-          <Stack space={[3, 3, 4, 5]}>
+      <Flex>
+        <Card padding={[1, 3, 4, 5]} flex={[1, 2, 3]}>
+          <Stack space={2}>
+            <Card style={{height: "20rem"}}>
               <img src={urlFor(article.imageRef)
-                          .width(1200)
-                          .height((4 / 16) * 1200)
                           .fit("crop")
                           .auto("format")
-                          .url()} />
-              <Heading size={[2, 3, 4]} padding={4}>
-                { article.title }
-              </Heading>
-              <Text>
-                <PortableText blocks={content} />
-              </Text>
-          </Stack>
-        </Card>
+                          .url()} 
+                style={{width: "100%", height: "100%", objectFit: "cover"}}/>
+              </Card>
+              <Card padding={[1, 3, 4, 5]} flex={[1, 2, 3]}>
+                <Heading size={[2, 3, 4]} padding={4}j>
+                  { article.title }
+                </Heading>
+                <Text>
+                  <PortableText blocks={content} />
+                </Text>
+              </Card>
+            </Stack>
+          </Card>
+          <Card padding={1} flex={1} />
+        </Flex>
     </>
   )
 }
@@ -56,7 +62,15 @@ export const getStaticProps: GetStaticProps = async (context) => {
           title, 
           "slug": slug.current,
           authors,
-          content,
+          content[]{
+              ...,
+              _type == 'listItem'=>{
+                products[]->{
+                  name, price, 
+                  'image': productImage.asset._ref
+                }
+              }
+            },
           "imageRef": heroImage.asset._ref
       }[0]`)
 

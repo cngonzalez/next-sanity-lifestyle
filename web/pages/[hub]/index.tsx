@@ -1,4 +1,4 @@
-import { Grid } from '@sanity/ui'
+import { Card } from '@sanity/ui'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { sanityClient } from '$sanityUtils'
 import { useRouter } from 'next/router'
@@ -24,7 +24,9 @@ export default function Hub({categories, subsectionArticles, featuredArticle}
     <>
       <NavBar categories={categories} />
       <FeaturedArticle article={featuredArticle} hub={hub} />
-      { subsectionRows }
+      <Card style={{backgroundColor: "#FCFCFF"}}>
+        { subsectionRows }
+      </Card>
     </>
   )
 }

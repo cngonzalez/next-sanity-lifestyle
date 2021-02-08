@@ -1,25 +1,34 @@
-import {Heading, Stack, Box, Flex} from '@sanity/ui'
+import {Heading, Stack, Box, Card, Flex, Text, Button} from '@sanity/ui'
 import {Article} from '../types'
 import Link from 'next/link'
-import BlockContent from '@sanity/block-content-to-react'
 import { urlFor } from '$sanityUtils'
+import { excerptBlockText } from '../utils/helpers'
 
 export function FeaturedArticle({article, hub}
   : {article: Article, hub: string}) {
 
     return  (
-      <Flex style={{maxHeight: "60vh"}}>
-        <Box flex={1} >
-            <Heading size={3} margin={2}
-              style={{textAlign: "center", marginTop: "30%", width: "100%"}}>
+      <Flex style={{maxHeight: "60vh", backgroundColor: "#F8F8F8"}}>
+        <Card flex={1} margin={5} 
+          style={{ textAlign: "center",backgroundColor: "#F8F8F8",
+                  paddingTop: "6rem"}}>
+          <Heading size={3} margin={5}>
               {article.title}
             </Heading>
-          </Box>
-        <Box flex={1} style={{objectFit: "contain"}}>
-          <img style={{height: '100%', width: '100%'}}
+          <Text style={{maxWidth: "60%", padding: "3rem", margin: "0 auto"}}>
+              { excerptBlockText(article.content[0], 12) }
+            </Text> 
+          <Button
+            fontSize={[2, 2, 3]}
+            mode="ghost"
+            text="Read more"
+          />
+          </Card>
+        <Card flex={1}>  
+          <img style={{height: '100%', width: '100%', objectFit: "cover"}}
             src={urlFor(article.imageRef) 
             }/>
-        </Box>
+        </Card>
         </Flex>
     )
   }

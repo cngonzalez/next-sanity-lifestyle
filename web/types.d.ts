@@ -22,5 +22,6 @@ export type ListItem = {
   _type: string,
   orientation: string,
   text: any[] | any?,
-  title: string
+  title: string,
+  products: any[] | any?
 }

@@ -50,8 +50,11 @@ function createSubsectionListItems(subsections) {
 async function buildList() {
   return (
     S.list()
-    .title('Content')
-    .items(await categoriesToListItems())
+      .title('Content')
+      .items([...await categoriesToListItems(),
+             S.divider(), 
+             S.documentTypeListItem('product')]
+    )
   )
 }
 export default buildList;

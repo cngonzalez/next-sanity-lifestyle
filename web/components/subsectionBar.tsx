@@ -31,7 +31,7 @@ export function SubsectionBar({hub, subsectionArticles}
 
     return (
       <Container width={1} padding={2, 3, 3, 3}>
-        <Card borderBottom padding={1, 3}>
+        <Card borderBottom style={{backgroundColor: "#FEFEF9"}} padding={1, 3}>
           <Link href={`/${hub}/${subsectionArticles.slug}`}>
             <Heading size={1}>
                 { subsectionArticles.name }

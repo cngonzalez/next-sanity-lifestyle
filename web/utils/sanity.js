@@ -23,8 +23,9 @@ export const PortableText = createPortableTextComponent({
   // (https://github.com/sanity-io/block-content-to-react)
   serializers: {
     types: {
-      listItemGroup: props => ( <ListItemGroup listItems={props.node.children} />),
-      listItem: props => ( < ListItemCard item={props.node} />)
+      listItemGroup: props => (<ListItemGroup listItems={props.node.children} />),
+      listItem: props => (<ListItemCard item={props.node} />),
+      productDisplay: props => {console.log(props)}
     }
   },
 });
