@@ -36,6 +36,12 @@ export default {
       ]
     },
     {
+      title: "Include Author Block",
+      name: "includeAuthorBlock",
+      type: "boolean",
+      description: "Flag to include the authors' images and bio (note: bio only shows up for single authors)"
+    },
+    {
       title: 'Subsection', 
       name: 'subsection',
       type: 'reference', 
@@ -45,7 +51,7 @@ export default {
       title: "Hero Image",
       name: "heroImage",
       type: "image",
-      description: "The hero image for this page.",
+      description: "The lead image for this page. Also used in thumbnails, etc.",
       options: {
         crop: true,
         hotspot: true

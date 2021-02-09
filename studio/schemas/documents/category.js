@@ -14,11 +14,17 @@ export default {
       title: "slug",
       name: "slug",
       type: "slug",
-      description: "The slug for this category (remove with new route obj)",
+      description: "The slug for this category; where it is routable on the main site.",
       options: {
         source: "name",
       },
       validation: (Rule) => Rule.required(),
+    },
+    {
+      title: "icon",
+      name: "icon",
+      type: "image",
+      description: "Choose a small icon to represent this category (shows up on article pages) and internally in the studio"
     },
     {
       title: "Featured Article",

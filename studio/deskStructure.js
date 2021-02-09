@@ -53,6 +53,8 @@ async function buildList() {
       .title('Content')
       .items([...await categoriesToListItems(),
              S.divider(), 
+             S.documentTypeListItem('person'),
+             S.divider(), 
              S.documentTypeListItem('product')]
     )
   )

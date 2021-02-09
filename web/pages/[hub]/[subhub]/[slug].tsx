@@ -1,4 +1,5 @@
 import { GetStaticProps } from 'next'
+import { groq } from 'next-sanity'
 import { NavBar, SocialBar } from '$components'
 import { Stack, Card, Box, Heading, Text, Container, Flex } from '@sanity/ui'
 import { Category, Article } from '../../types'
@@ -23,11 +24,11 @@ export default function ArticlePage(
               <span>{ article.categoryName }</span>
             </Heading>
             <SocialBar />
-            <Box padding={3}>
+            <Box>
               <img src={urlFor(article.imageRef) } 
                 style={{width: "100%", height: "100%", objectFit: "cover"}}/>
-              </Box>
-              <Box padding={[1, 3, 4, 5]} flex={[1, 2, 3]}>
+            </Box>
+              <Box padding={[1, 3, 4]}>
                 <Heading size={[2, 3, 4]} padding={4}>
                   { article.title }
                 </Heading>
@@ -45,10 +46,14 @@ export default function ArticlePage(
 
 export const getStaticPaths: GetStaticPaths = async (context) => {
   const articleSlugs = await sanityClient.fetch(
-    `*[_type == "article"]{'slug': slug.current}`)
+    `*[_type == "article"]{
+      'slug': slug.current,
+      'subhub': subsection->slug.current,
+      'hub': subsection->category->slug.current
+    }`)
 
   const paths = {paths: articleSlugs.map(
-    (slug) => ({params: {slug: slug.slug}}))}
+    (slugObj) => ({params: slugObj}))}
     return {
       ...paths,
      fallback: true
@@ -57,9 +62,9 @@ export const getStaticPaths: GetStaticPaths = async (context) => {
 
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  // && slug.current == ${context.params.hub}
-  const article = await sanityClient.fetch(`
-      *[_type == "article"]{
+  console.log(context)
+  const article = await sanityClient.fetch(groq`
+      *[_type == "article" && slug.current == $slug]{
           title, 
           "slug": slug.current,
           authors,
@@ -74,7 +79,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
               }
             },
           "imageRef": heroImage.asset._ref
-      }[0]`)
+      }[0]`, {slug: context.params.slug})
 
   return ({
     props: {

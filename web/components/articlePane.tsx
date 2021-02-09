@@ -4,11 +4,10 @@ import Link from 'next/link'
 import BlockContent from '@sanity/block-content-to-react'
 import { urlFor } from '$sanityUtils'
 
-export function ArticlePane({article, hub, height}
-  : {article: Article, hub: string, height: Integer}) {
+export function ArticlePane({article} : {article: Article}) {
     return (
-      <Box>
-        <Link href={`/article-temp/${article.slug}`}>
+      <Box style={{minWidth: "200px"}}>
+        <Link href={`/${article.category.slug}/${article.subsection.slug}/${article.slug}`}>
           <Stack space={2}>
             <Box padding={2}>
               <img src={urlFor(article.imageRef)

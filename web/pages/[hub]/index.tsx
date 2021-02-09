@@ -52,7 +52,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
       title,
       "slug": slug.current,
       "imageRef": heroImage.asset._ref,
-      "subsectionName": subsection->name,
+      "subsection": subsection->{name, "slug": slug.current},
+      "category": subsection->category->{name, "slug": slug.current},
       content
     }
   }`
@@ -67,11 +68,15 @@ export const getStaticProps: GetStaticProps = async (context) => {
           "slug": slug.current,
           "articles": *[_type == 'article' 
         && references(^._id) && _id != $featuredArticleId] 
-            | order('publishedDate' desc)[0..1]{
+            | order('publishedDate' desc)[0..2]{
                _id,
                title,
                "slug": slug.current,
-               "imageRef": heroImage.asset._ref}
+               "imageRef": heroImage.asset._ref,
+               "subsection": subsection->{name, "slug": slug.current},
+               "category": subsection->category->{name, "slug": slug.current},
+
+            }
         }`, {id: category._id,
              featuredArticleId: category.featuredArticle._id})
 

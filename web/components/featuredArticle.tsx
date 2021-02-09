@@ -8,11 +8,11 @@ export function FeaturedArticle({article, hub}
   : {article: Article, hub: string}) {
 
     return  (
-      <Flex style={{maxHeight: "60vh", backgroundColor: "#F8F8F8"}}>
+      <Flex wrap="wrap-reverse" style={{maxHeight: "60vh", backgroundColor: "#F8F8F8"}}>
 
         <Card flex={1} margin={5} 
           style={{ textAlign: "center",backgroundColor: "#F8F8F8",
-                  paddingTop: "6rem"}}>
+                  paddingTop: "6rem", minWidth: '350px' }}>
             <Heading size={3} margin={5}>
                 {article.title}
               </Heading>
@@ -28,7 +28,7 @@ export function FeaturedArticle({article, hub}
             </Link>
           </Card>
         
-          <Card flex={1}>  
+          <Card flex={1} style={{ minWidth: '350px', maxHeight: "60vh"}}>  
             <img style={{height: '100%', width: '100%', objectFit: "cover"}}
               src={urlFor(article.imageRef) 
               }/>

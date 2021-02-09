@@ -4,7 +4,7 @@ import {
   createPortableTextComponent,
   createPreviewSubscriptionHook,
 } from "next-sanity";
-import { ListItemGroup, ListItemCard } from '../components'
+import { ListItemGroup, ListItemCard, ProductDisplay } from '../components'
 
 const config = {
   //TODO: put everything in env
@@ -25,7 +25,8 @@ export const PortableText = createPortableTextComponent({
     types: {
       listItemGroup: props => (<ListItemGroup listItems={props.node.children} />),
       listItem: props => (<ListItemCard item={props.node} />),
-      productDisplay: props => {console.log(props)}
+      productDisplay: props => (<ProductDisplay product={props.node} fullSize={true} />),
+      hr: props => (<hr />)
     }
   },
 });

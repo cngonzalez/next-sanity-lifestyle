@@ -3,6 +3,11 @@ export type Category = {
   slug: string
 }
 
+export type Author = {
+  imageRef: string,
+  bio: string
+}
+
 export type Article = {
   title: string,
   slug: string,

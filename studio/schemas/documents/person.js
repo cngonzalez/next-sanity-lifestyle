@@ -14,5 +14,11 @@ export default {
       type: "image",
       description: "The portrait for this editor.",
     },
+    {
+      title: "Bio",
+      name: "bio",
+      type: "text",
+      description: "A short biography for this editor, to appear in articles, hub pages, etc.",
+    },
   ]
 }
