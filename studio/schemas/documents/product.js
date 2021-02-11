@@ -55,14 +55,11 @@ export default {
       validation: (Rule) => Rule.required(),
     },
     {
-      title: "Categories",
-      name: "categories",
-      description: "Categories this product belongs to",
-      type: "array",
-      of: [
-        {type: "reference",
-         to: [{type: "category"}]}
-      ]
+      title: "Category",
+      name: "category",
+      description: "Category this product belongs to",
+      type: "reference",
+      to: [{type: "category"}]
     },
   ]
 }

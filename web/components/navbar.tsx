@@ -11,6 +11,9 @@ export function NavBar({categories, selectedCategoryName}
       <Button mode="bleed" padding={2} text={category.name} />
     </Link>
   ))
+  navButtons.unshift(
+          <Button mode="bleed" tone='positive' padding={2} text='Shop' />
+  )
 
   return (
       <Card borderBottom paddingTop={4} paddingBottom={1} style={{textAlign: 'center'}}>

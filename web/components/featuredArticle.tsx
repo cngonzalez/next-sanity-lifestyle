@@ -1,4 +1,4 @@
-import {Heading, Stack, Box, Card, Flex, Text, Button} from '@sanity/ui'
+import {Heading, Stack, Box, Flex, Text, Button} from '@sanity/ui'
 import {Article} from '../types'
 import Link from 'next/link'
 import { urlFor } from '$sanityUtils'
@@ -27,11 +27,11 @@ export function FeaturedArticle({article}: {article: Article}) {
             </Link>
           </Flex>
         
-          <Card flex={1} style={{ minWidth: '350px', maxHeight: "60vh"}}>  
+          <Box flex={1} style={{ minWidth: '350px', maxHeight: "60vh"}}>  
             <img style={{height: '100%', width: '100%', objectFit: "cover"}}
               src={urlFor(article.imageRef) 
               }/>
-          </Card>
+          </Box>
 
         </Flex>
     )

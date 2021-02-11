@@ -40,7 +40,14 @@ export type ListItem= {
 export type Product = {
   image: string,
   name: string,
+  slug: string,
   description: string,
   price: string,
   manufacturer: string
 }
+
+export type CategoryProducts = {
+  name: string,
+  products: Product[]
+}
+

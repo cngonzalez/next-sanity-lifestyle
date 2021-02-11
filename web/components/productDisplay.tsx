@@ -26,7 +26,12 @@ export function ProductDisplay({product, displayHorizontal, shopNow}
           {product.name}<br/>
         </span>
         <span style={{fontSize: '.9em'}}>
-          ${product.price}
+          ${product.price}<br/>
+        </span>
+        <span style={{textTransform: 'uppercase', textDecoration: 'underline', fontSize: '.9em'}}>
+          <Link href={`/shop/${product.slug}`}>
+            { (shopNow) ? "Shop now" : "More..." }
+          </Link> 
         </span>
       </Text>
     </Box>

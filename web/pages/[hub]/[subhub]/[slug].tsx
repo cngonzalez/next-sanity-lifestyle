@@ -82,12 +82,14 @@ export const getStaticProps: GetStaticProps = async (context) => {
               _type == 'listItem'=>{
                 products[]->{
                   name, price, description, manufacturer,
+                  'slug': slug.current,
                   'image': productImage.asset._ref
                 }
               },
               _type == 'productsDisplay'=>{
                 products[]->{
                   name, price, description, manufacturer,
+                  'slug': slug.current,
                   'image': productImage.asset._ref
                 }
               }

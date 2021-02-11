@@ -19,7 +19,8 @@ export function ProductsDisplay({products, fullSize, copy}
       <ProductDisplay
         key={i}
         product={product}
-        displayHorizontal={displayHorizontal} />))
+        displayHorizontal={displayHorizontal}
+        shopNow />))
 
     if (products.length < 4) {
       return ( <Flex wrap='wrap' justify='center'>{productDisplays}</Flex> )
@@ -39,7 +40,8 @@ export function ProductsDisplay({products, fullSize, copy}
       <ProductDisplay
         key={i}
         product={product}
-        displayHorizontal={displayHorizontal} />))
+        displayHorizontal={displayHorizontal}
+        shopNow />))
 
     const finalDisplay = <Stack>{productDisplays.slice(0,3)}</Stack>
 
