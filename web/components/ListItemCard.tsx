@@ -1,28 +1,43 @@
-import { Heading, Text, Card} from '@sanity/ui'
+import { Heading, Text, Box} from '@sanity/ui'
 import { ListItem } from '../types'
-import { ProductDisplay } from '$components'
+import { ProductsDisplay } from '$components'
 import { urlFor, PortableText } from '$sanityUtils'
 
 export function ListItemCard({item, groupParent}
            : {item: ListItem, groupParent: boolean}) {
 
-  const productDisplays = []
+  let display;
+
   if (item.products) {
-    item.products.forEach((product, i) => {
-      const fullSize = !groupParent && item.orientation=='horizontal'
-      productDisplays.push(<ProductDisplay product={product} fullSize={fullSize} key={i}/>)
-    })
+    if (item.orientation == 'horizontal' || !groupParent) {
+      if (item.productDisplaySize == 'small') {
+        display = (<ProductsDisplay products={item.products} fullSize={false} copy={item.text} />)
+      } else {
+        display = (
+          <>
+            <PortableText blocks={item.text} />
+            <ProductsDisplay products={item.products} fullSize={true} />
+          </>
+          )
+      }
+    } else {
+        display = (
+          <>
+            <PortableText blocks={item.text} />
+            <ProductsDisplay products={item.products} fullSize={false} />
+          </>
+          )
+    }
+  } else {
+    display = (
+      <PortableText blocks={item.text} />)
   }
   
-  //if groupParent == true, products are column below text
-  //if product display is large and no group parent, products are row below text
-  //if product display is small and no group parent, products are column next to text
   return (
-    <Card>
+    <Box padding={2} margin={3} style={{minWidth: '225px'}}>
       <Heading size={2}>{item.title}</Heading>
       <Text>
-        <PortableText blocks={item.text} />
-        { productDisplays}
+        { display }
       </Text>
-    </Card>)
+    </Box>)
 }

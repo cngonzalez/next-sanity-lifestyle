@@ -4,7 +4,7 @@ import { sanityClient } from '$sanityUtils'
 import { useRouter } from 'next/router'
 import { NavBar, SubsectionBar, FeaturedArticle } from '$components'
 import { Category, Article, SubsectionArticles } from '../../types'
-import { groq } from "next-sanity";
+import { groq } from "next-sanity"
 
 
 export default function Hub({categories, subsectionArticles, featuredArticle}
@@ -68,7 +68,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
           "slug": slug.current,
           "articles": *[_type == 'article' 
         && references(^._id) && _id != $featuredArticleId] 
-            | order('publishedDate' desc)[0..2]{
+            | order('publishedDate' desc)[0..1]{
                _id,
                title,
                "slug": slug.current,
@@ -83,7 +83,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   return ({
     props: {
       categories: await sanityClient.fetch(`*[_type == "category"]{name,'slug': slug.current}`),
-      subsectionArticles: subsectionArticles,
+      subsectionArticles: subsectionArticles.filter(sub => sub.articles.length),
       featuredArticle: category.featuredArticle
     }
   })

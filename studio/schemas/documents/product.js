@@ -17,6 +17,16 @@ export default {
       validation: (Rule) => Rule.required(),
     },
     {
+      title: "slug",
+      name: "slug",
+      type: "slug",
+      description: "The slug for the dedicated product page",
+      options: {
+        source: "name",
+      },
+      validation: (Rule) => Rule.required(),
+    },
+    {
       title: "SKU",
       name: "sku",
       type: "string",
@@ -43,6 +53,16 @@ export default {
       type: "string",
       description: "The manufacturer of this product",
       validation: (Rule) => Rule.required(),
+    },
+    {
+      title: "Categories",
+      name: "categories",
+      description: "Categories this product belongs to",
+      type: "array",
+      of: [
+        {type: "reference",
+         to: [{type: "category"}]}
+      ]
     },
   ]
 }

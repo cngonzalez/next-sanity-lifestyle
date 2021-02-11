@@ -54,23 +54,24 @@ export const GlobalStyle = createGlobalStyle((props: {theme: Theme}) => {
     }
 
   .hubHeader {
-    line-height: 0.3;
+    line-height: 0.1;
     text-align: center;
-    width: 100%;
   }
+
   .hubHeader span {
     display: inline-block;
     position: relative;  
   }
+
   .hubHeader span:before,
   .hubHeader span:after {
     content: "";
     position: absolute;
     height: 5px;
-    border-bottom: 1px solid grey;
     border-top: 1px solid grey;
     top: 0;
-    width: 100%;
+    max-width: 400px;
+    min-width: 100%;
   }
   .hubHeader span:before {
     right: 100%;

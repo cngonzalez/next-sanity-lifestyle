@@ -4,7 +4,7 @@ import {
   createPortableTextComponent,
   createPreviewSubscriptionHook,
 } from "next-sanity";
-import { ListItemGroup, ListItemCard, ProductDisplay } from '../components'
+import { ListItemGroup, ListItemCard, ProductsDisplay } from '../components'
 
 const config = {
   //TODO: put everything in env
@@ -15,8 +15,7 @@ const config = {
 
 export const sanityClient = createClient(config);
 export const urlFor = (source) => createImageUrlBuilder(config).image(source);
-//
-// Set up Portable Text serialization
+
 export const PortableText = createPortableTextComponent({
   ...config,
   // Serializers passed to @sanity/block-content-to-react
@@ -25,8 +24,12 @@ export const PortableText = createPortableTextComponent({
     types: {
       listItemGroup: props => (<ListItemGroup listItems={props.node.children} />),
       listItem: props => (<ListItemCard item={props.node} />),
-      productDisplay: props => (<ProductDisplay product={props.node} fullSize={true} />),
-      hr: props => (<hr />)
+      productsDisplay: props => (<ProductsDisplay
+        products={props.node.products}
+        fullSize={!props.node.copy || typeof(props.node.copy) == 'undefined'}
+        copy={props.node.copy} />),
+      hr: props => (<hr />),
+      undefined: props => (<span />)
     }
   },
 });

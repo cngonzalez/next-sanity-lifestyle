@@ -1,4 +1,4 @@
-import {Container, Heading, Card, Flex } from '@sanity/ui'
+import {Container, Heading, Card, Flex, Grid } from '@sanity/ui'
 import {Article} from '../types'
 import Link from 'next/link'
 import client from '../client'
@@ -9,13 +9,12 @@ import { ArticlePane } from '$components'
 export function SubsectionBar({hub, subsectionArticles}
   : {hub: string, subsectionArticles: SubsectionArticles}) {
 
-
     const articlePanes = subsectionArticles.articles.map((article, i) => (
       <ArticlePane article={article} hub={hub} key={i} />) 
     )
 
     return (
-      <Container width={1} padding={2, 3, 3, 3}>
+      <Container width={1} padding={[2, 3, 3, 3]}>
         <Card borderBottom style={{backgroundColor: "#FCFCFF"}} padding={1, 3}>
           <Link href={`/${hub}/${subsectionArticles.slug}`}>
             <Heading size={1}>
@@ -23,7 +22,7 @@ export function SubsectionBar({hub, subsectionArticles}
             </Heading>
           </Link>
         </Card>
-        <Flex wrap="wrap">
+        <Flex wrap="wrap" justify='space-between'>
           { articlePanes }
         </Flex>
 

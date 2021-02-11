@@ -64,7 +64,7 @@ export default {
       of: [{type: 'block'},
            {type: 'listItem'},
            {type: 'hr'},
-           {type: 'productDisplay'}]
+           {type: 'productsDisplay'}]
     },
   ]
 }

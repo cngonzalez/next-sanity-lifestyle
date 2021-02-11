@@ -9,7 +9,7 @@ import product from './documents/product'
 
 import listItem from './pages/page-components/listItem'
 import hr from './pages/page-components/hr'
-import productDisplay from './pages/page-components/productDisplay'
+import productsDisplay from './pages/page-components/productsDisplay'
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -24,7 +24,7 @@ export default createSchema({
       category,
       subsection,
       product,
-      productDisplay,
+      productsDisplay,
       listItem,
       hr,
     ])

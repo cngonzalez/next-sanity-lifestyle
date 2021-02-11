@@ -1,19 +1,15 @@
 import {Heading, Stack, Box } from '@sanity/ui'
 import {Article} from '../types'
 import Link from 'next/link'
-import BlockContent from '@sanity/block-content-to-react'
 import { urlFor } from '$sanityUtils'
 
 export function ArticlePane({article} : {article: Article}) {
     return (
-      <Box style={{minWidth: "200px"}}>
+      <Box padding={2} display='flex' flex={1} style={{minWidth: '350px'}}>
         <Link href={`/${article.category.slug}/${article.subsection.slug}/${article.slug}`}>
-          <Stack space={2}>
+          <Stack space={2} >
             <Box padding={2}>
-              <img src={urlFor(article.imageRef)
-                .width(350)
-                .height(350)
-                }/>
+              <img style={{height: '350px', width: '100%', objectFit: 'cover'}} src={urlFor(article.imageRef) }/>
              </Box>
             <Heading size={1} margin={2} style={{maxWidth: "300px", margin: "0 auto"}}>
                 {article.title}
