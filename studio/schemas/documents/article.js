@@ -4,6 +4,22 @@ export default {
   type: "document",
   fields: [
     {
+      title: 'Subsection', 
+      name: 'subsection',
+      type: 'reference', 
+      to: [{type: "subsection"}]
+    },
+    {
+      title: "Hero Image",
+      name: "heroImage",
+      type: "image",
+      description: "The lead image for this page. Also used in thumbnails, etc.",
+      options: {
+        crop: true,
+        hotspot: true
+      }
+    },
+    {
       title: "Title",
       name: "title",
       type: "string",
@@ -40,22 +56,6 @@ export default {
       name: "includeAuthorBlock",
       type: "boolean",
       description: "Flag to include the authors' images and bio (note: bio only shows up for single authors)"
-    },
-    {
-      title: 'Subsection', 
-      name: 'subsection',
-      type: 'reference', 
-      to: [{type: "subsection"}]
-    },
-    {
-      title: "Hero Image",
-      name: "heroImage",
-      type: "image",
-      description: "The lead image for this page. Also used in thumbnails, etc.",
-      options: {
-        crop: true,
-        hotspot: true
-      }
     },
     {
       title: 'Content', 

@@ -11,10 +11,10 @@ export function Breadcrumbs({article}: {article: Article}) {
           <Link href={`/${article.category.slug}`}>
             { `${article.category.name} >>` }
           </Link>
-          <Link href={`${article.category.slug}/${article.subsection.slug}`}>
+          <Link href={`/${article.category.slug}/${article.subsection.slug}`}>
             { ` ${article.subsection.name} >>` }
           </Link>
-          <Link href={`${article.category.slug}/${article.subsection.slug}/${article.slug}`}>
+          <Link href={`/${article.category.slug}/${article.subsection.slug}/${article.slug}`}>
             { ` ${article.title} ` }
           </Link>
         </Text>

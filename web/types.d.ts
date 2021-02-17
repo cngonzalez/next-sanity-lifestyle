@@ -14,12 +14,22 @@ export type Author = {
 }
 
 export type Article = {
+  _id: string?,
   title: string,
   slug: string,
   imageRef: string
   subsection: Subsection,
   category: Category,
   content: any[] | any?
+}
+
+export type ArticleData = {
+  data: Article
+}
+
+export type CategoryFeature = {
+  categoryId: string,
+  featuredArticle: Article
 }
 
 export type SubsectionArticles = {
@@ -50,4 +60,3 @@ export type CategoryProducts = {
   name: string,
   products: Product[]
 }
-

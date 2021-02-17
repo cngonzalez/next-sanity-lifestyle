@@ -28,8 +28,12 @@
       "path": "./schemas/schema"
     },
     {
+      "name": "part:@sanity/base/initial-value-templates",
+      "path": "./src/initialValueTemplates.js"
+    },
+    {
       "name": "part:@sanity/desk-tool/structure",
-      "path": "./deskStructure.js"
+      "path": "./src/deskStructure.js"
     }
   ]
 }

@@ -12,7 +12,9 @@ export function NavBar({categories, selectedCategoryName}
     </Link>
   ))
   navButtons.unshift(
-          <Button mode="bleed" tone='positive' padding={2} text='Shop' />
+        <Link href='/shop' key='shop'>
+          <Button mode='bleed' tone='positive' padding={2} text='Shop' />
+        </Link>
   )
 
   return (

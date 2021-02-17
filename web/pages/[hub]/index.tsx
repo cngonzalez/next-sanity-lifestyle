@@ -1,23 +1,74 @@
-import { Card } from '@sanity/ui'
 import { GetStaticPaths, GetStaticProps } from 'next'
-import { sanityClient } from '$sanityUtils'
 import { useRouter } from 'next/router'
-import { NavBar, SubsectionBar, FeaturedArticle } from '$components'
-import { Category, Article, SubsectionArticles } from '../../types'
 import { groq } from "next-sanity"
 
+import { getClient, usePreviewSubscription } from '$sanityUtils'
+import { Card } from '@sanity/ui'
+import { NavBar, SubsectionBar, FeaturedArticle } from '$components'
+import { Category, Article, SubsectionArticles, CategoryFeature } from '../../types'
 
-export default function Hub({categories, subsectionArticles, featuredArticle}
+const categoryQuery = groq`
+  *[_type == 'category' && slug.current == $hub][0]
+    {
+      "categoryId": _id,
+      featuredArticle->{
+        _id,
+        title,
+        "slug": slug.current,
+        "imageRef": heroImage.asset._ref,
+        "subsection": subsection->{name, "slug": slug.current},
+        "category": subsection->category->{name, "slug": slug.current},
+        content
+      }
+    }`
+
+const subsectionArticleQuery = groq`
+  *[_type == 'subsection' && category._ref == $id]
+    {
+      name,
+      "slug": slug.current,
+      "articles": *[_type == 'article' 
+    && references(^._id) && _id != $featuredArticleId] 
+        | order('publishedDate' desc)[0..1]{
+           _id,
+           title,
+           "slug": slug.current,
+           "imageRef": heroImage.asset._ref,
+           "subsection": subsection->{name, "slug": slug.current},
+           "category": subsection->category->{name, "slug": slug.current},
+        }
+    }`
+
+export default function Hub({categories, subsectionArticleData, featuredArticleData, preview}
   : {categories: Category[],
-    subsectionArticles: SubsectionArticles[],
-    featuredArticle: Article}) {
+    subsectionArticleData: SubsectionArticles[],
+    featuredArticleData: CategoryFeature,
+    preview: boolean}) {
 
     const router = useRouter()
     const hub = router.query.hub
 
-    const subsectionRows = subsectionArticles.map((subsection, i) => (
-      <SubsectionBar hub={hub} subsectionArticles={subsection} key={i} /> 
-      )
+    const {data: category} = usePreviewSubscription(categoryQuery, {
+      params: {hub: hub},
+      initialData: featuredArticleData,
+      enabled: preview || router.query.preview !== null,
+    })
+
+    const featuredArticle = category.featuredArticle
+
+
+    const {data: subsectionArticles} = usePreviewSubscription(subsectionArticleQuery, {
+      params: {id: category.categoryId,
+             featuredArticleId: category.featuredArticle._id},
+      initialData: subsectionArticleData,
+      enabled: preview || router.query.preview !== null,
+    })
+
+    const subsectionRows = subsectionArticles
+            .filter(sub => sub.articles.length)
+            .map((subsection, i) => (
+              <SubsectionBar hub={hub} subsectionArticles={subsection} key={i} /> 
+            )
     )
 
   return (
@@ -33,7 +84,7 @@ export default function Hub({categories, subsectionArticles, featuredArticle}
 
 export const getStaticPaths: GetStaticPaths = async (context) => {
   //TODO -- add campaign, which would also live at this level of slug
-  const categories = await sanityClient.fetch(
+  const categories = await getClient().fetch(
     `*[_type == "category"].slug.current`)
 
     return {
@@ -42,49 +93,21 @@ export const getStaticPaths: GetStaticPaths = async (context) => {
    }
 }
 
-export const getStaticProps: GetStaticProps = async (context) => {
-  const categoryQuery = groq`
-  *[_type == 'category' && slug.current == $hub][0]
-  {
-    _id,
-    featuredArticle->{
-      _id,
-      title,
-      "slug": slug.current,
-      "imageRef": heroImage.asset._ref,
-      "subsection": subsection->{name, "slug": slug.current},
-      "category": subsection->category->{name, "slug": slug.current},
-      content
-    }
-  }`
+export const getStaticProps: GetStaticProps = async ({params, preview = false }) => {
 
-  const category = await sanityClient.fetch(
-        categoryQuery, {hub: context.params.hub})
+  const category = await getClient(preview).fetch(
+        categoryQuery, params)
 
-  const subsectionArticles = await sanityClient.fetch(
-     groq`*[_type == 'subsection' && category._ref == $id]
-        {
-          name,
-          "slug": slug.current,
-          "articles": *[_type == 'article' 
-        && references(^._id) && _id != $featuredArticleId] 
-            | order('publishedDate' desc)[0..1]{
-               _id,
-               title,
-               "slug": slug.current,
-               "imageRef": heroImage.asset._ref,
-               "subsection": subsection->{name, "slug": slug.current},
-               "category": subsection->category->{name, "slug": slug.current},
-
-            }
-        }`, {id: category._id,
+  const subsectionArticles = await getClient(preview).fetch(
+        subsectionArticleQuery, {id: category.categoryId,
              featuredArticleId: category.featuredArticle._id})
 
   return ({
     props: {
-      categories: await sanityClient.fetch(`*[_type == "category"]{name,'slug': slug.current}`),
-      subsectionArticles: subsectionArticles.filter(sub => sub.articles.length),
-      featuredArticle: category.featuredArticle
+      categories: await getClient(preview).fetch(`*[_type == "category"]{name,'slug': slug.current}`),
+      subsectionArticleData: subsectionArticles,
+      featuredArticleData: category,
+      preview
     }
   })
 }

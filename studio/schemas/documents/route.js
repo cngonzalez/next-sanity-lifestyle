@@ -13,17 +13,6 @@ export default {
   ],
   fields: [
     {
-      name: 'page',
-      type: 'reference',
-      validation: (Rule) => Rule.required(),
-      description: 'The page you want to appear at this path. Remember it needs to be published.',
-      to: [
-        {
-          type: 'page',
-        },
-      ],
-    },
-    {
       name: 'slug',
       type: 'slug',
       description: 'This is the website path the page will accessible on',

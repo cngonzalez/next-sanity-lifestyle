@@ -8,6 +8,10 @@ export default {
       name: "productImage",
       type: "image",
       description: "The manufacturer photo for this image.",
+      options: {
+        crop: true,
+        hotspot: true
+      }
     },
     {
       title: "name",
