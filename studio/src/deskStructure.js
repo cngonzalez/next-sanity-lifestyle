@@ -4,7 +4,7 @@ import { MdEdit, MdRemoveRedEye } from "react-icons/md"
 import { articlePreview, categoryPreview, productPreview } from './preview'
 
 async function categoriesToListItems() {
-  const query = `*[_type=='category']{
+  const query = `*[_type=='category' && !(_id in path("drafts.**"))]{
       name, _id, slug,
       'subsections': *[_type=='subsection'&& references(^._id) ]{name, _id, slug} 
     }`

@@ -36,7 +36,6 @@ export const getStaticPaths: GetStaticPaths = async (context) => {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  console.log(context)
   const articleQuery = groq`
   *[_type == 'subsection' && slug.current == $subhub][0]
     {"articles": *[_type == 'article' && references(^._id)] 

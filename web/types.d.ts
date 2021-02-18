@@ -36,7 +36,7 @@ export type CategoryFeature = {
 
 export type SubsectionArticles = {
   name: string,
-  slug: string,
+  slug: string?,
   articles: Article[]
 }
 
@@ -55,7 +55,8 @@ export type Product = {
   slug: string,
   description: string,
   price: string,
-  manufacturer: string
+  manufacturer: string,
+  relatedArticles: Article[]
 }
 
 export type CategoryProducts = {

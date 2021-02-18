@@ -3,7 +3,7 @@ import Error from 'next/error'
 import { Product, Category } from '../../types'
 import { getClient, urlFor, PortableText, usePreviewSubscription } from '$sanityUtils'
 import { groq } from "next-sanity"
-import { NavBar } from '$components'
+import { NavBar, SubsectionBar } from '$components'
 import { Stack, Inline, Button, Box, Heading, Text, Badge, Flex } from '@sanity/ui'
 import { useRouter } from 'next/router'
 
@@ -15,7 +15,17 @@ import { useRouter } from 'next/router'
       name,
       description,
       price,
-      manufacturer
+      manufacturer,
+     'relatedArticles': *[_type == 'article' && references(^._id)][0..2]
+     {
+        _id,
+        title,
+        "slug": slug.current,
+        "imageRef": heroImage.asset._ref,
+        "subsection": subsection->{name, "slug": slug.current},
+        "category": subsection->category->{name, "slug": slug.current},
+        content
+      }
     }`
 
 export default function ProductPage({categories, productData, preview}
@@ -77,6 +87,7 @@ export default function ProductPage({categories, productData, preview}
           </Stack>
         </Box>
       </Flex> 
+      <SubsectionBar hub="" subsectionArticles={{name: "See Related Articles", articles: product.relatedArticles}} /> 
     </>
     )
 }

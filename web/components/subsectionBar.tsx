@@ -13,14 +13,17 @@ export function SubsectionBar({hub, subsectionArticles}
       <ArticlePane article={article} hub={hub} key={i} />) 
     )
 
+    const heading = (<Heading size={1}>{ subsectionArticles.name }</Heading>)
+
     return (
       <Container width={1}>
         <Card borderBottom style={{backgroundColor: "#FCFCFF"}} paddingTop={5} paddingBottom={3}>
-          <Link href={`/${hub}/${subsectionArticles.slug}`}>
-            <Heading size={1}>
-                { subsectionArticles.name }
-            </Heading>
-          </Link>
+          { (subsectionArticles.slug && subsectionArticles.slug != 'undefined') ? 
+            (<Link href={`/${hub}/${subsectionArticles.slug}`}>
+              { heading }
+            </Link> ) :
+            <>{ heading }</>
+          }
         </Card>
         <Flex wrap="wrap" justify='space-between'>
           { articlePanes }
