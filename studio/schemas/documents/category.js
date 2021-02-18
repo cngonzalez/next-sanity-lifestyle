@@ -39,7 +39,16 @@ export default {
             params: {id: document._id}
           }
         }
+      }
+    },
+    {
+      title: "Featured Article Display",
+      name: "featuredArticleDisplay",
+      type: "string",
+      description: "Determines how the featured article will be displayed on the hub page.",
+      options: {
+        list: ['Text Below', '50/50 Card', 'Text Overlay'],
       },
-    }
+    },
   ]
 }

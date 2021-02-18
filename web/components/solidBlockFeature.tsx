@@ -4,13 +4,13 @@ import Link from 'next/link'
 import { urlFor } from '$sanityUtils'
 import { excerptBlockText } from '../utils/helpers'
 
-export function FeaturedArticle({article}: {article: Article}) {
+export function SolidBlockFeature({article}: {article: Article}) {
 
     return  (
-      <Flex wrap="wrap" style={{maxHeight: "500px", backgroundColor: "#F8F8F8"}}>
+      <Flex wrap="wrap" style={{maxHeight: "500px"}} padding={1}>
 
         <Flex flex={1} justify='center' direction='column'
-          style={{ textAlign: "center",backgroundColor: "#F8F8F8",  minWidth: '350px' }}>
+          style={{ textAlign: "center", backgroundColor: "#32021f", color: 'white', minWidth: '350px' }}>
 
           <Heading size={3} style={{width: '100%'}}>
             {article.title}

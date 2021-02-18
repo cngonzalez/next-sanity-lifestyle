@@ -8,11 +8,11 @@ export default function Shop({categories, categoryProducts}
   : {categories: Category[], categoryProducts: CategoryProducts[]}) {
 
     const categoryGrids = categoryProducts.map((cat,i) => (
-      <Box key={i} padding={2} margin={5}>
+      <Box key={i} paddingY={4} margin={[0,0,1,2]}>
         <Heading className='hubHeader'>
           <span>{cat.name}</span>
         </Heading>
-        <Grid columns={2} padding={2} margin={5}>
+        <Grid columns={[1, 1, 3]}  padding={[0, 0, 2]} margin={5}>
           { cat.products.map((prod, j) => (<ProductDisplay key={j} product={prod} />)) }
         </Grid>
       </Box>

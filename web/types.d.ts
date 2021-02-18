@@ -29,6 +29,8 @@ export type ArticleData = {
 
 export type CategoryFeature = {
   categoryId: string,
+  name: string,
+  featuredArticleDisplay: string,
   featuredArticle: Article
 }
 

@@ -25,7 +25,7 @@ export function NavBar({categories, selectedCategoryName}
               <span style={{fontWeight: 'lighter'}}>Life</span>styled.
             </Heading>
           </Link>
-        <Inline space={[4,4,5]} style={{textAlign: 'center'}}>
+        <Inline space={[0,1,4,5]} style={{textAlign: 'center'}}>
           { navButtons }
         </Inline>
         </Stack>

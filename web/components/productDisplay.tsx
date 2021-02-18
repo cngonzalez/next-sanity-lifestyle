@@ -4,6 +4,7 @@ import Link from 'next/link'
 
 export function ProductDisplay({product, displayHorizontal, shopNow}
   : {product: any, displayHorizontal: boolean, shopNow: boolean}) {
+
   const imgBox = (
     <Box style={{width: '225px', margin: '0 auto'}}>
       <img style={{height: '225px',
@@ -18,6 +19,7 @@ export function ProductDisplay({product, displayHorizontal, shopNow}
   const productInfo = (
     <Box>
       <Text style={{textAlign: 'center'}}>
+
         <span style={{fontSize: '.9em'}}>
           {product.manufacturer}<br/>
         </span>
@@ -25,14 +27,17 @@ export function ProductDisplay({product, displayHorizontal, shopNow}
         <span style={{textTransform: 'uppercase', fontWeight: 'bold'}}>
           {product.name}<br/>
         </span>
+
         <span style={{fontSize: '.9em'}}>
           ${product.price}<br/>
         </span>
+
         <span style={{textTransform: 'uppercase', textDecoration: 'underline', fontSize: '.9em'}}>
           <Link href={`/shop/${product.slug}`}>
             { (shopNow) ? "Shop now" : "More..." }
           </Link> 
         </span>
+
       </Text>
     </Box>
   )

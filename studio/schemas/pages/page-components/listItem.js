@@ -1,17 +1,5 @@
 import React from 'react'
 
-// const Test = (test) => {
-//   return (<div>List Item</div>)
-// }
-
-// function truncateText(text, length) {
-//   if (text.length <= length) {
-//     return text;
-//   }
-
-//   return text.substr(0, length) + '\u2026'
-// }
-
 export default {
   title: "List Item",
   name: "listItem",
@@ -46,7 +34,7 @@ export default {
       title: "Product Display Size",
       name: "productDisplaySize",
       type: "string",
-      description: "Determines whether the items display large or small in the list item.",
+      description: "Determines whether the items display in large format below the list item or small format to the side of the list item (only applicable in horizontal list items)",
       options: {
         list: ["small", "large"],
       },
@@ -66,20 +54,6 @@ export default {
   initialValue: {
     orientation: "horizontal",
     productDisplaySize: "small",
-  },
-  // preview: {
-  //   select: {
-  //     title: 'text'
-  //   },
-  //   component: Test,
-  //   prepare(selection) {
-  //     console.log(selection)
-  //     const {text} = selection;
-  //     return {
-  //       title: truncateText(text, 20),
-  //       subtitle: orientation
-  //     }
-  //   }
-  // }
+  }
 }
 

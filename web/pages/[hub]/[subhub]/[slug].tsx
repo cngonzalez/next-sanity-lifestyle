@@ -81,7 +81,7 @@ export default function ArticlePage({categories, articleData, preview}
               </Box>
             </Stack>
           </Box>
-         <Box padding={1} flex={[0, 1]} />
+         <Box padding={1} flex={[0, 0, 1]} />
         </Flex>
     </>
   )

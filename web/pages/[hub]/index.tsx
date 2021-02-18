@@ -3,14 +3,18 @@ import { useRouter } from 'next/router'
 import { groq } from "next-sanity"
 
 import { getClient, usePreviewSubscription } from '$sanityUtils'
-import { Card } from '@sanity/ui'
-import { NavBar, SubsectionBar, FeaturedArticle } from '$components'
+import { Box, Container, Heading, Inline } from '@sanity/ui'
+import { NavBar, SubsectionBar, FeaturedArticle,
+  TextOverlayFeature, TextUnderFeature, SolidBlockFeature } from '$components'
 import { Category, Article, SubsectionArticles, CategoryFeature } from '../../types'
+import { GiWomanElfFace } from 'react-icons/gi'
 
 const categoryQuery = groq`
   *[_type == 'category' && slug.current == $hub][0]
     {
       "categoryId": _id,
+      name,
+      featuredArticleDisplay,
       featuredArticle->{
         _id,
         title,
@@ -39,45 +43,74 @@ const subsectionArticleQuery = groq`
         }
     }`
 
-export default function Hub({categories, subsectionArticleData, featuredArticleData, preview}
+export default function Hub({categories, subsectionArticleData, categoryFeature, preview}
   : {categories: Category[],
     subsectionArticleData: SubsectionArticles[],
-    featuredArticleData: CategoryFeature,
+    categoryFeature: CategoryFeature,
     preview: boolean}) {
 
-    const router = useRouter()
-    const hub = router.query.hub
+  const router = useRouter()
+  const hub = router.query.hub
 
-    const {data: category} = usePreviewSubscription(categoryQuery, {
-      params: {hub: hub},
-      initialData: featuredArticleData,
-      enabled: preview || router.query.preview !== null,
-    })
-
-    const featuredArticle = category.featuredArticle
+  const {data: category} = usePreviewSubscription(categoryQuery, {
+    params: {hub: hub},
+    initialData: categoryFeature,
+    enabled: preview || router.query.preview !== null,
+  })
 
 
-    const {data: subsectionArticles} = usePreviewSubscription(subsectionArticleQuery, {
-      params: {id: category.categoryId,
-             featuredArticleId: category.featuredArticle._id},
-      initialData: subsectionArticleData,
-      enabled: preview || router.query.preview !== null,
-    })
+  const featuredArticle = category.featuredArticle
+  let featuredArticleDisplay;
 
-    const subsectionRows = subsectionArticles
-            .filter(sub => sub.articles.length)
-            .map((subsection, i) => (
-              <SubsectionBar hub={hub} subsectionArticles={subsection} key={i} /> 
-            )
-    )
+  switch(category.featuredArticleDisplay) {
+    case 'Text Below':
+      featuredArticleDisplay = <TextUnderFeature article={featuredArticle} hub={hub} />
+      break;
+    case 'Text Overlay':
+      featuredArticleDisplay = <TextOverlayFeature article={featuredArticle} hub={hub} />
+      break;
+    case '50/50 Card':
+      featuredArticleDisplay = <SolidBlockFeature article={featuredArticle} hub={hub} />
+      break;
+    default: 
+      featuredArticleDisplay = <TextUnderFeature article={featuredArticle} hub={hub} />
+  }
+
+
+
+  const {data: subsectionArticles} = usePreviewSubscription(subsectionArticleQuery, {
+    params: {id: category.categoryId,
+           featuredArticleId: category.featuredArticle._id},
+    initialData: subsectionArticleData,
+    enabled: preview || router.query.preview !== null,
+  })
+
+  const subsectionRows = subsectionArticles
+          .filter(sub => sub.articles.length)
+          .map((subsection, i) => (
+            <SubsectionBar hub={hub} subsectionArticles={subsection} key={i} /> 
+          )
+  )
+
+    
 
   return (
     <>
       <NavBar categories={categories} />
-      <FeaturedArticle article={featuredArticle} hub={hub} />
-      <Card style={{backgroundColor: "#FCFCFF"}}>
-        { subsectionRows }
-      </Card>
+      <Container width={1}>
+        <Box paddingY={[3,5]}>
+          <Heading size={2}>
+            <Inline>
+              <GiWomanElfFace style={{margin: "0 1rem"}}/>
+              {category.name}
+            </Inline>
+          </Heading>
+        </Box>
+          { featuredArticleDisplay }
+        <Box>
+          { subsectionRows }
+        </Box>
+      </Container>
     </>
   )
 }
@@ -106,7 +139,7 @@ export const getStaticProps: GetStaticProps = async ({params, preview = false })
     props: {
       categories: await getClient(preview).fetch(`*[_type == "category"]{name,'slug': slug.current}`),
       subsectionArticleData: subsectionArticles,
-      featuredArticleData: category,
+      categoryFeature: category,
       preview
     }
   })
