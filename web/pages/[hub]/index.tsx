@@ -9,6 +9,8 @@ import { NavBar, SubsectionBar, FeaturedArticle,
 import { Category, Article, SubsectionArticles, CategoryFeature } from '../../types'
 import { GiWomanElfFace } from 'react-icons/gi'
 
+import { excerptBlockText } from '../../utils/helpers'
+
 const categoryQuery = groq`
   *[_type == 'category' && slug.current == $hub][0]
     {
@@ -60,20 +62,27 @@ export default function Hub({categories, subsectionArticleData, categoryFeature,
 
 
   const featuredArticle = category.featuredArticle
+  const featureProps = {
+    title: featuredArticle.title,
+    text: excerptBlockText(featuredArticle.content[0], 12),
+    url: `${featuredArticle.category.slug}/${featuredArticle.subsection.slug}/${featuredArticle.slug}`,
+    imageRef: featuredArticle.imageRef
+  }
+
   let featuredArticleDisplay;
 
   switch(category.featuredArticleDisplay) {
     case 'Text Below':
-      featuredArticleDisplay = <TextUnderFeature article={featuredArticle} hub={hub} />
+      featuredArticleDisplay = <TextUnderFeature {...featureProps} />
       break;
     case 'Text Overlay':
-      featuredArticleDisplay = <TextOverlayFeature article={featuredArticle} hub={hub} />
+      featuredArticleDisplay = <TextOverlayFeature {...featureProps} />
       break;
     case '50/50 Card':
-      featuredArticleDisplay = <SolidBlockFeature article={featuredArticle} hub={hub} />
+      featuredArticleDisplay = <SolidBlockFeature {...featureProps} />
       break;
     default: 
-      featuredArticleDisplay = <TextUnderFeature article={featuredArticle} hub={hub} />
+      featuredArticleDisplay = <TextUnderFeature {...featureProps} />
   }
 
 

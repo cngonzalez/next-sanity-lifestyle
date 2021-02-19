@@ -31,7 +31,7 @@ export default {
       name: "featuredArticle",
       description: "The featured article for this category",
       type: "reference",
-      to: [{type: "article"}],
+      to: [{type: "article"}, {type: 'campaign'}],
       // options: {
       //   filter: ({document}) => {
       //     return {

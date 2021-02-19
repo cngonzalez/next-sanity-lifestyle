@@ -63,3 +63,11 @@ export type CategoryProducts = {
   name: string,
   products: Product[]
 }
+
+export type Campaign = {
+  slug: string,
+  image: string,
+  title: string,
+  content: any[] | any?,
+  products: Product[]
+}

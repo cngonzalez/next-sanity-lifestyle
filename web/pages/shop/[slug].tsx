@@ -113,7 +113,8 @@ export const getStaticProps: GetStaticProps = async ({params, preview = false}) 
   return ({
     props: {
       categories: await getClient(preview).fetch(`*[_type == "category"]{name,'slug': slug.current}`),
-      productData: product
+      productData: product,
+      preview
     }
   })
 }

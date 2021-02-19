@@ -6,7 +6,8 @@ import { excerptBlockText } from '../utils/helpers'
 import styled from 'styled-components'
 
 
-export function TextOverlayFeature({article}: {article: Article}) {
+export function TextOverlayFeature({title, text, imageRef, url}
+  : {title: string, text: string, imageRef: string, url: string}) {
 
   const OverlayBox = styled.div`
     background: 
@@ -14,7 +15,7 @@ export function TextOverlayFeature({article}: {article: Article}) {
         rgba(0, 0, 0, 0.4),
         rgba(0, 0, 0, 0.4)
       ),
-      url(${urlFor(article.imageRef)});
+      url(${urlFor(imageRef)});
       background-size: cover;
       height: 100%;
       width: 100%;
@@ -33,22 +34,24 @@ export function TextOverlayFeature({article}: {article: Article}) {
           <OverlayBox>
             <OverlayText>
               <Heading size={3}>
-                {article.title}
+                {title}
               </Heading>
               <Box paddingTop={4}>
                 <Text>
-                    { excerptBlockText(article.content[0], 20) }
+                    { text }
                 </Text> 
               </Box>
               <Box paddingTop={4}>
-                <Link href={`${article.category.slug}/${article.subsection.slug}/${article.slug}`}>
-                  <Button
-                    fontSize={[2, 2, 3]}
-                    mode="ghost"
-                    text="Read more"
-                    style={{maxWidth: '200px', margin: '0 auto'}}
-                  />
-                </Link>
+                { url ? 
+                ( <Link href={url}>
+                    <Button
+                      fontSize={[2, 2, 3]}
+                      mode="ghost"
+                      text="Read more"
+                      style={{maxWidth: '200px', margin: '0 auto'}}
+                    />
+                  </Link> ) : <></>
+                }
               </Box>
             </OverlayText>
           </OverlayBox>

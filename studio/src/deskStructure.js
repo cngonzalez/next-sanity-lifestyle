@@ -97,7 +97,8 @@ async function buildList() {
                             .icon(MdRemoveRedEye)
                         ])
                     )
-                )
+              ),
+             S.documentTypeListItem('campaign'),
            ])
   )
 }

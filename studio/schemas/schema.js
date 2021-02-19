@@ -6,10 +6,13 @@ import person from './documents/person'
 import category from './documents/category'
 import subsection from './documents/subsection'
 import product from './documents/product'
+import campaign from './documents/campaign'
 
-import listItem from './pages/page-components/listItem'
-import hr from './pages/page-components/hr'
-import productsDisplay from './pages/page-components/productsDisplay'
+import listItem from './pages/listItem'
+import hr from './pages/hr'
+import productsDisplay from './pages/productsDisplay'
+import solidBlockFeature from './pages/solidBlockFeature'
+import textOverlayFeature from './pages/textOverlayFeature'
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -24,8 +27,11 @@ export default createSchema({
       category,
       subsection,
       product,
+      campaign,
       productsDisplay,
       listItem,
       hr,
+      solidBlockFeature,
+      textOverlayFeature
     ])
 })
