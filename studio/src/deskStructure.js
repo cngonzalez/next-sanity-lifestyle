@@ -1,7 +1,7 @@
 import S from '@sanity/desk-tool/structure-builder'
 import client from 'part:@sanity/base/client'
-import { MdEdit, MdRemoveRedEye } from "react-icons/md"
-import { articlePreview, categoryPreview, productPreview } from './preview'
+import { MdEdit, MdRemoveRedEye, MdStayPrimaryPortrait } from "react-icons/md"
+import { IFramePreview, MobilePreview } from './preview'
 
 async function categoriesToListItems() {
   const query = `*[_type=='category' && !(_id in path("drafts.**"))]{
@@ -32,9 +32,12 @@ async function categoriesToListItems() {
                     .documentId(cat._id)
                     .views([
                       S.view.form(), 
-                      S.view.component(categoryPreview)
+                      S.view.component(document => IFramePreview(document))
                         .title('Web Preview')
-                        .icon(MdRemoveRedEye)
+                        .icon(MdRemoveRedEye),
+                      S.view.component(document => MobilePreview(document))
+                        .title('Mobile Preview')
+                        .icon(MdStayPrimaryPortrait)
                     ])
               ),
               ...createSubsectionListItems(cat.slug.current, cat.subsections)
@@ -61,12 +64,15 @@ function createSubsectionListItems(categorySlug, subsections) {
                 .schemaType('article')
                 .documentId(id)
                 .views([
-                  S.view.form(),
-                  S.view.component(document => 
-                      articlePreview(document, categorySlug, sub.slug.current)
-                    )
+                  S.view.form(),   
+                  S.view.component(document =>
+                    IFramePreview(document, `${categorySlug}/${sub.slug.current}`))
                     .title('Web Preview')
-                    .icon(MdRemoveRedEye)
+                    .icon(MdRemoveRedEye),
+                  S.view.component(document => 
+                    IFramePreview(document, `${categorySlug}/${sub.slug.current}`))
+                    .title('Mobile Preview')
+                    .icon(MdStayPrimaryPortrait)
                 ])
             )
           ) 
@@ -92,9 +98,12 @@ async function buildList() {
                         .documentId(id)
                         .views([
                           S.view.form(),
-                          S.view.component(productPreview)
+                          S.view.component(document => IFramePreview(document, 'shop'))
                             .title('Web Preview')
-                            .icon(MdRemoveRedEye)
+                            .icon(MdRemoveRedEye),
+                          S.view.component(document => MobilePreview(document, 'shop'))
+                            .title('Mobile Preview')
+                            .icon(MdStayPrimaryPortrait)
                         ])
                     )
               ),

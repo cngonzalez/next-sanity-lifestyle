@@ -1,29 +1,37 @@
 import React from 'react'
-import client from 'part:@sanity/base/client'
+import SanityMobilePreview from 'sanity-mobile-preview'
+import 'sanity-mobile-preview/dist/index.css?raw'
 
-export function articlePreview({document: {displayed: { slug = {}, _type = "" } } }, categorySlug, subsectionSlug) {
+export function IFramePreview({document: {displayed: { slug = {}}}}, prefix){
+
+  if (!slug || typeof(slug) == 'undefined') {
+    return (
+      <div>
+        <p>Please create a slug first for this document.</p>
+      </div>
+    )
+  }
+
+  let url;
+
+  if (prefix && typeof(prefix) != 'undefined') {
+    url = `http://localhost:3000/${prefix}/${slug.current}?preview`
+  } else {
+    url = `http://localhost:3000/${slug.current}?preview`
+  }
+  
   return (
       <iframe
-      src={`http://localhost:3000/${categorySlug}/${subsectionSlug}/${slug.current}?preview`}
+      src={url}
         style={{ width: '100%', height: '100%', border: 'none' }}
       />
   )
 }
 
-export function productPreview({document: {displayed: { slug = {}, _type = "" } } }) {
+export function MobilePreview(document, prefix) {
   return (
-      <iframe
-      src={`http://localhost:3000/shop/${slug.current}?preview`}
-        style={{ width: '100%', height: '100%', border: 'none' }}
-      />
-  )
-}
-
-export function categoryPreview({document: {displayed: { slug = {}, _type = "" } } }) {
-  return (
-      <iframe
-      src={`http://localhost:3000/${slug.current}?preview`}
-        style={{ width: '100%', height: '100%', border: 'none' }}
-      />
+    <SanityMobilePreview>
+      { IFramePreview(document, prefix) }
+    </SanityMobilePreview>
   )
 }
