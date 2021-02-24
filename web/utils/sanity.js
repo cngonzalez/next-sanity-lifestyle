@@ -4,7 +4,13 @@ import {
   createPortableTextComponent,
   createPreviewSubscriptionHook
 } from "next-sanity";
-import { ListItemGroup, ListItemCard, ProductsDisplay } from '../components'
+
+import { 
+  ListItemGroup,
+  ListItemCard, 
+  ProductsDisplay,
+  TextOverlayFeature
+} from '../components'
 
 const config = {
   //TODO: put everything in env
@@ -42,6 +48,7 @@ export const PortableText = createPortableTextComponent({
         fullSize={!props.node.copy || typeof(props.node.copy) == 'undefined'}
         copy={props.node.copy} />),
       hr: props => (<hr />),
+      textOverlayFeature: props => (<TextOverlayFeature {...props.node} />),
       undefined: props => (<span />)
     }
   },

@@ -9,10 +9,10 @@ export function ProductsDisplay({products, fullSize, copy}
   let displayHorizontal;
   let productDisplays;
 
-  //meaning the user has indicated they want the products to be in a row across the body of the text
   if (fullSize) {
 
-  //if there's only one product, put its info beside it to fill up space
+    //if there's only one product and products are on their own row,
+    //put its info beside it to fill up space
     displayHorizontal = (products.length == 1)
 
     productDisplays = products.map((product, i) => (
@@ -22,17 +22,17 @@ export function ProductsDisplay({products, fullSize, copy}
         displayHorizontal={displayHorizontal}
         shopNow />))
 
+
+    //row or grid
     if (products.length < 4) {
       return ( <Flex wrap='wrap' justify='center'>{productDisplays}</Flex> )
-
-    //if there are 4 items return a grid
     } else {
       return ( <Grid>{productDisplays.slice(0, 4)}</Grid> )
     }
   } 
 
 
-  //meaning the user has indicated they want the products to be to the side of the text
+  //products not on own row
   else {
   //if there's multiple products, put its info beside it to avoid filling vertical space
     displayHorizontal = (products.length > 1)
@@ -49,10 +49,12 @@ export function ProductsDisplay({products, fullSize, copy}
     if (copy && typeof(copy) != 'undefined') {
       return (
         <Flex wrap='wrap' align='center'>
-          <Box style={{minWidth: '150px', maxWidth: '500px'}} padding={2}>
-            <PortableText blocks={copy}/>
+          <Box flex={2} paddingX={2}>
+            <Text>
+              <PortableText blocks={copy}/>
+            </Text>
           </Box>
-          <Box>{finalDisplay}</Box>
+          <Box flex={1}>{finalDisplay}</Box>
         </Flex>
       )
     } else {

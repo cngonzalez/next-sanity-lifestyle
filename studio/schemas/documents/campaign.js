@@ -21,6 +21,12 @@ export default {
       }
     },
     {
+      title: "Text",
+      name: "text",
+      type: "excerptPortableText",
+description: "Short descriptive text that may be used to promote this campaign",
+    },
+    {
       title: "slug",
       name: "slug",
       type: "slug",

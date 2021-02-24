@@ -1,19 +1,30 @@
 import { GetStaticProps, GetStaticPaths } from 'next'
 import Error from 'next/error'
 import { Product, Category } from '../../types'
-import { getClient, urlFor, PortableText, usePreviewSubscription } from '$sanityUtils'
 import { groq } from "next-sanity"
-import { NavBar, SubsectionBar } from '$components'
-import { Stack, Inline, Button, Box, Heading, Text, Badge, Flex } from '@sanity/ui'
+import { NavBar, ShopGrid, SolidBlockFeature } from '$components'
+import { getClient, urlFor, PortableText, usePreviewSubscription } from '$sanityUtils'
+import { handleBlockFeature } from '$helpers'
+import { Stack, Box } from '@sanity/ui'
 import { useRouter } from 'next/router'
 
   const campaignQuery = groq`
     *[_type == 'campaign' && slug.current == $slug][0]
     {
      'slug': slug.current,
-     'image': productImage.asset._ref,
+     'image': leadImage.asset._ref,
       title,
-      content,
+      text,
+      content[]{
+        ...,
+        _type == 'productsDisplay'=>{
+          products[]->{
+            name, price, description, manufacturer,
+            'slug': slug.current,
+            'image': productImage.asset._ref
+          }
+        }
+      },
       products[]->{
         'slug': slug.current,
         'image': productImage.asset._ref,
@@ -38,9 +49,27 @@ export default function CampaignPage({categories, campaignData, preview}
     enabled: preview || router.query.preview !== null,
   })
 
+  const parsedContent = campaign.content.map(({_type, ...block}, i) => (
+    <Box key={i}>
+      { handleBlockFeature(_type, block) }
+    </Box>
+  ))
+
+  const campaignFeatureProps = {
+    ...campaign,
+    blockColor: {hex: '#FFF'},
+    textColor: {hex: '#000'},
+    orientation: 'right'
+  }
+
   return (
     <>
       <NavBar categories={categories} />
+      <Stack space={0}>
+        <SolidBlockFeature {...campaignFeatureProps} />
+        { parsedContent }
+      </Stack>
+      <ShopGrid sectionTitle="Shop the Campaign" products={campaign.products} />
     </>
     )
 }

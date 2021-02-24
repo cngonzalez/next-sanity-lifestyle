@@ -1,28 +1,21 @@
-import { Box, Grid, Heading, Stack } from '@sanity/ui'
+import { Box, Grid, Heading } from '@sanity/ui'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { sanityClient } from '$sanityUtils'
 import { Category, CategoryProducts } from '../../types'
-import { NavBar, ProductDisplay } from '$components'
+import { NavBar, ShopGrid } from '$components'
 
 export default function Shop({categories, categoryProducts}
   : {categories: Category[], categoryProducts: CategoryProducts[]}) {
 
     const categoryGrids = categoryProducts.map((cat,i) => (
-      <Box key={i} paddingY={4} margin={[0,0,1,2]}>
-        <Heading className='hubHeader'>
-          <span>{cat.name}</span>
-        </Heading>
-        <Grid columns={[1, 1, 3]}  padding={[0, 0, 2]} margin={5}>
-          { cat.products.map((prod, j) => (<ProductDisplay key={j} product={prod} />)) }
-        </Grid>
-      </Box>
-    ))
+      <ShopGrid key={i} sectionTitle={cat.name} products={cat.products} />)
+    )
 
     //TODO: promotion/campaign up top
     return (
       <>
         <NavBar categories={categories} />
-        <Box> 
+        <Box paddingY={3}> 
           { categoryGrids }
         </Box>
       </> 

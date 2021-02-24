@@ -52,6 +52,13 @@ export default {
       ]
     },
     {
+      name: 'excerpt',
+      type: 'excerptPortableText',
+      title: 'Excerpt',
+      description:
+        'This ends up on summary pages, on Google, when people share your post in social media.',
+    },
+    {
       title: "Include Author Block",
       name: "includeAuthorBlock",
       type: "boolean",

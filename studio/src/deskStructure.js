@@ -107,7 +107,24 @@ async function buildList() {
                         ])
                     )
               ),
-             S.documentTypeListItem('campaign'),
+             S.documentTypeListItem('campaign')
+                .child(
+                  S.documentTypeList('campaign')
+                    .child(id => 
+                      S.document()
+                        .schemaType('campaign')
+                        .documentId(id)
+                        .views([
+                          S.view.form(),
+                          S.view.component(document => IFramePreview(document, 'shop/campaign'))
+                            .title('Web Preview')
+                            .icon(MdRemoveRedEye),
+                          S.view.component(document => MobilePreview(document, 'shop/campaign'))
+                            .title('Mobile Preview')
+                            .icon(MdStayPrimaryPortrait)
+                        ])
+                    )
+                )
            ])
   )
 }

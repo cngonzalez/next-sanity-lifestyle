@@ -1,3 +1,9 @@
+import { 
+  TextOverlayFeature,
+  TextUnderFeature,
+  SolidBlockFeature,
+  ProductsDisplay
+} from '../components'
 //grouped items might be list items, product displays, etc. 
 //abstract back out for all items
 export function handleGroupedItems(content, key, additionalFilter) {
@@ -36,4 +42,29 @@ export function handleGroupedItems(content, key, additionalFilter) {
 export function excerptBlockText(block, excerptLength) {
   const snippet = block.children[0].text.split(" ").slice(0, excerptLength).join(" ") 
   return `${snippet}...`
+}
+
+
+export function handleBlockFeature(featureType, props) {
+  let featureDisplay;
+  switch(featureType) {
+    case 'textBelowFeature':
+      featureDisplay = <TextUnderFeature {...props} />
+      break;
+    case 'textOverlayFeature':
+      featureDisplay = <TextOverlayFeature {...props} />
+      break;
+    case 'solidBlockFeature':
+      console.log(props)
+      featureDisplay = <SolidBlockFeature {...props} />
+      break;
+    case 'productsDisplay':
+      featureDisplay = <ProductsDisplay {...props} />
+      break;
+    default: 
+      featureDisplay = <TextUnderFeature {...props} />
+  }
+
+  return featureDisplay
+
 }

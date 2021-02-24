@@ -1,12 +1,14 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import { groq } from "next-sanity"
+import { Category, Article, SubsectionArticles, CategoryFeature } from '../../types'
 
-import { getClient, usePreviewSubscription } from '$sanityUtils'
 import { Box, Container, Heading, Inline } from '@sanity/ui'
 import { NavBar, SubsectionBar, FeaturedArticle,
   TextOverlayFeature, TextUnderFeature, SolidBlockFeature } from '$components'
-import { Category, Article, SubsectionArticles, CategoryFeature } from '../../types'
+import { handleBlockFeature } from '$helpers'
+
+import { getClient, usePreviewSubscription } from '$sanityUtils'
 import { GiWomanElfFace } from 'react-icons/gi'
 
 import { excerptBlockText } from '../../utils/helpers'
@@ -24,7 +26,7 @@ const categoryQuery = groq`
         "imageRef": heroImage.asset._ref,
         "subsection": subsection->{name, "slug": slug.current},
         "category": subsection->category->{name, "slug": slug.current},
-        content
+        excerpt
       }
     }`
 
@@ -64,27 +66,12 @@ export default function Hub({categories, subsectionArticleData, categoryFeature,
   const featuredArticle = category.featuredArticle
   const featureProps = {
     title: featuredArticle.title,
-    text: excerptBlockText(featuredArticle.content[0], 12),
+    text: featuredArticle.excerpt,
     url: `${featuredArticle.category.slug}/${featuredArticle.subsection.slug}/${featuredArticle.slug}`,
-    imageRef: featuredArticle.imageRef
+    image: featuredArticle.imageRef
   }
 
-  let featuredArticleDisplay;
-
-  switch(category.featuredArticleDisplay) {
-    case 'Text Below':
-      featuredArticleDisplay = <TextUnderFeature {...featureProps} />
-      break;
-    case 'Text Overlay':
-      featuredArticleDisplay = <TextOverlayFeature {...featureProps} />
-      break;
-    case '50/50 Card':
-      featuredArticleDisplay = <SolidBlockFeature {...featureProps} />
-      break;
-    default: 
-      featuredArticleDisplay = <TextUnderFeature {...featureProps} />
-  }
-
+  const featuredArticleDisplay = handleBlockFeature(category.featuredArticleDisplay, featureProps)
 
 
   const {data: subsectionArticles} = usePreviewSubscription(subsectionArticleQuery, {

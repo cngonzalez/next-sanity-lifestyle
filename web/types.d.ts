@@ -13,6 +13,10 @@ export type Author = {
   bio: string
 }
 
+export type Color = {
+  hex: string
+}
+
 export type Article = {
   _id: string?,
   title: string,
@@ -20,6 +24,7 @@ export type Article = {
   imageRef: string
   subsection: Subsection,
   category: Category,
+  excerpt: any[] | any?,
   content: any[] | any?
 }
 
@@ -68,6 +73,7 @@ export type Campaign = {
   slug: string,
   image: string,
   title: string,
+  text: any[] | any?,
   content: any[] | any?,
   products: Product[]
 }

@@ -11,7 +11,7 @@ export function ArticlePane({article} : {article: Article}) {
             <Box padding={2}>
               <img style={{height: '350px', width: '100%', objectFit: 'cover'}} src={urlFor(article.imageRef) }/>
              </Box>
-            <Heading size={1} margin={2} style={{maxWidth: "300px", margin: "0 auto"}}>
+            <Heading size={1} margin={2}>
                 {article.title}
               </Heading>
             </Stack>

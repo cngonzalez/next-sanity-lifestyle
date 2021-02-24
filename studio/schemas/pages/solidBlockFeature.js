@@ -29,18 +29,28 @@ export default {
         hotspot: true
       }
     },
-    //eventually: use similar to choose left or right
     //TODO: reference to article, product, or campaign
-    // {
-    //   title: "Orientation",
-    //   name: "orientation",
-    //   type: "string",
-    //   description: "The orientation of this list item",
-    //   options: {
-    //     list: ["horizontal", "vertical"],
-    //   },
-    //   validation: (Rule) => Rule.required(),
-    // },
+    {
+      title: "Text Orientation",
+      name: "orientation",
+      type: "string",
+      description: "The orientation of the text on the block (e.g, should text appear to the left or right of the image?",
+      options: {
+        list: ["left", "right"],
+      },
+    },
+    {
+      title: "Text Color",
+      name: "textColor",
+      type: "color",
+      description: "The color that text should appear in",
+    },
+    {
+      title: "Block Color",
+      name: "blockColor",
+      type: "color",
+      description: "The background color of the block",
+    },
   ]
 }
 

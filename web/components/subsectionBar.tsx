@@ -25,9 +25,9 @@ export function SubsectionBar({hub, subsectionArticles}
             <>{ heading }</>
           }
         </Card>
-        <Flex wrap="wrap" justify='space-between'>
+        <Grid columns={[1, 1, 2]}  padding={[0, 0, 2]}>
           { articlePanes }
-        </Flex>
+        </Grid>
 
       </Container>
     )

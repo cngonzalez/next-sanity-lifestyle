@@ -21,12 +21,6 @@ export default {
       validation: (Rule) => Rule.required(),
     },
     {
-      title: "icon",
-      name: "icon",
-      type: "image",
-      description: "Choose a small icon to represent this category (shows up on article pages) and internally in the studio"
-    },
-    {
       title: "Featured Article",
       name: "featuredArticle",
       description: "The featured article for this category",
@@ -47,8 +41,12 @@ export default {
       type: "string",
       description: "Determines how the featured article will be displayed on the hub page.",
       options: {
-        list: ['Text Below', '50/50 Card', 'Text Overlay'],
-      },
+      list: [
+        {title: 'Text Below', value: 'textBelowFeature'},
+        {title: '50/50 Card', value: 'solidBlockFeature'},
+        {title: 'Text Overlay', value: 'textOverlayFeature'}
+      ],
+    },
     },
   ]
 }

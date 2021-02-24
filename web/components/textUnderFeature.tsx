@@ -1,17 +1,17 @@
 import {Heading, Stack, Box, Flex, Text, Button} from '@sanity/ui'
 import {Article} from '../types'
 import Link from 'next/link'
-import { urlFor } from '$sanityUtils'
+import { urlFor, PortableText } from '$sanityUtils'
 import { excerptBlockText } from '../utils/helpers'
 
-export function TextUnderFeature({title, text, imageRef, url}
-  : {title: string, text: string, imageRef: string, url: string}) {
+export function TextUnderFeature({title, text, image, url}
+  : {title: string, text: any | any[], image: string, url: string}) {
 
     return  (
       <Stack>
           <Box flex={1} style={{ minWidth: '350px', maxHeight: "400px"}}>  
             <img style={{height: '100%', width: '100%', objectFit: "cover"}}
-              src={urlFor(imageRef) 
+              src={urlFor(image) 
               }/>
           </Box>
           <Box paddingY={[2,3]}>
@@ -22,7 +22,7 @@ export function TextUnderFeature({title, text, imageRef, url}
                 </Heading>
                 <Box paddingTop={4}>
                   <Text>
-                      { text }
+                    <PortableText blocks={text} />
                   </Text> 
                 </Box>
               </Box>

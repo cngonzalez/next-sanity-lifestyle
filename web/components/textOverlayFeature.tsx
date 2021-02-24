@@ -1,13 +1,13 @@
 import {Heading, Box, Flex, Text, Button} from '@sanity/ui'
 import {Article} from '../types'
 import Link from 'next/link'
-import { urlFor } from '$sanityUtils'
+import { urlFor, PortableText } from '$sanityUtils'
 import { excerptBlockText } from '../utils/helpers'
 import styled from 'styled-components'
 
 
-export function TextOverlayFeature({title, text, imageRef, url}
-  : {title: string, text: string, imageRef: string, url: string}) {
+export function TextOverlayFeature({title, text, image, url}
+  : {title: string, text: any | any[], image: string, url: string}) {
 
   const OverlayBox = styled.div`
     background: 
@@ -15,7 +15,7 @@ export function TextOverlayFeature({title, text, imageRef, url}
         rgba(0, 0, 0, 0.4),
         rgba(0, 0, 0, 0.4)
       ),
-      url(${urlFor(imageRef)});
+      url(${urlFor(image)});
       background-size: cover;
       height: 100%;
       width: 100%;
@@ -38,7 +38,7 @@ export function TextOverlayFeature({title, text, imageRef, url}
               </Heading>
               <Box paddingTop={4}>
                 <Text>
-                    { text }
+                  <PortableText blocks={text} />
                 </Text> 
               </Box>
               <Box paddingTop={4}>
