@@ -1,21 +1,15 @@
 const fetch = require('node-fetch')
 import Schema from '@sanity/schema'
 import blockTools from '@sanity/block-tools'
-const sanityClient = require('@sanity/client')
 const jsdom = require('jsdom')
+const fileSystem = require( "fs" );
+const ndjson = require( "ndjson" );
 const {JSDOM} = jsdom
 
 const storeHash = process.env.SANITY_STUDIO_BIGCOMMERCE_STORE_HASH
 const storeUrl = process.env.SANITY_STUDIO_BIGCOMMERCE_STOREFRONT_API_URL
-const pageSize = 100
+const pageSize = 1000
 let cursorStr = ""
-
-const client = sanityClient({
-  projectId: process.env.SANITY_STUDIO_PROJECT_ID,
-  dataset: process.env.SANITY_STUDIO_DATASET,
-  token: process.env.SANITY_STUDIO_API_TOKEN,
-  useCdn: false 
-})
 
 const slugify = (input) => input
                          .toLowerCase()
@@ -118,7 +112,7 @@ const reshapeNode = ({node}) => {
       _id: `imported-BC-${node.entityId}`,
       _type: 'product',
       name: node.name,
-      slug: slugify(node.name),
+      slug: {current: slugify(node.name)},
       sku: node.sku,
       description: blockTools.htmlToBlocks(
         node.description || "",
@@ -135,23 +129,28 @@ const reshapeNode = ({node}) => {
 }
 
 
+
 const main = async () => {
   const token = await getToken()
   let {site: {products: {pageInfo, edges}}} = await getProducts(token)
-  // while (edges) {
-    cursorStr = `= ${pageInfo.endCursor}`
-    const transformed = edges.map(reshapeNode)
-    let transaction = client.transaction()
-    transformed.forEach(document => {
-      transaction.createOrReplace(document)
-    })
+j
+  const transformStream = ndjson.stringify();
+  const outputStream = transformStream.pipe(
+    fileSystem.createWriteStream( __dirname + "/data.ndjson" ) );
 
-    return transaction.commit()
-    
-    //conform each node to the format sanity wants
-    //upload 
-    //load new products
-  // }
+  cursorStr = `= ${pageInfo.endCursor}`
+  const transformed = edges.map(reshapeNode)
+  transformed.forEach(document => {
+    transformStream.write(document)
+  })
+
+  transformStream.end();
+  outputStream.on(
+    "finish",
+    function handleFinish() {
+      console.log(`dumped to ${ __dirname}/data.ndjson!`);
+    }
+  )
 }
 
 main()

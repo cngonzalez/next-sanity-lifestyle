@@ -1,7 +1,13 @@
+const fieldsetOptions = {options: {collapsible: true, collapsed: true}}
+
 export default {
   title: "Product",
   name: "product",
   type: "document",
+  fieldsets: [
+    {name: 'locale_fr', title: 'French language overrides', ...fieldsetOptions},
+    {name: 'locale_es', title: 'Spanish language overrides', ...fieldsetOptions},
+  ],
   fields: [
     {
       title: "Name",
@@ -71,6 +77,36 @@ export default {
       description: "Category this product belongs to (used for editorial embeds, etc.)",
       type: "reference",
       to: [{type: "category"}]
-    }
+    },
+    {
+      title: "Name (French)",
+      name: "locale_fr_name",
+      type: "string",
+      description: "Le nom en francais",
+      fieldset: 'locale_fr'
+    },
+    {
+      title: "Description (French)",
+      name: "locale_fr_description",
+      description: "La description  en francais",
+      type: 'array',
+      of: [{type: 'block'}],
+      fieldset: 'locale_fr'
+    },
+    {
+      title: "Name (Spanish)",
+      name: "locale_es_name",
+      type: "string",
+      description: "El nombre en español",
+      fieldset: 'locale_es'
+    },
+    {
+      title: "Description (Spanish)",
+      name: "locale_es_description",
+      description: "La descripción en español",
+      type: 'array',
+      of: [{type: 'block'}],
+      fieldset: 'locale_es'
+    },
   ]
 }
