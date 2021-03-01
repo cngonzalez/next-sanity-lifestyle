@@ -4,6 +4,19 @@ export default {
   type: "document",
   fields: [
     {
+      title: "Name",
+      name: "name",
+      type: "string",
+      description: "The name of this product",
+      validation: (Rule) => Rule.required(),
+    },
+    {
+      title: "Big Commerce Entity ID",
+      name: "entityId",
+      type: "number",
+      description: "The unique ID of this product in BC (used to ensure that our representation in Sanity is up-to-date with changes in BC)",
+    },
+    {
       title: "Product image",
       name: "productImage",
       type: "image",
@@ -12,13 +25,6 @@ export default {
         crop: true,
         hotspot: true
       }
-    },
-    {
-      title: "name",
-      name: "name",
-      type: "string",
-      description: "The name of this product",
-      validation: (Rule) => Rule.required(),
     },
     {
       title: "slug",
@@ -40,7 +46,8 @@ export default {
     {
       title: "Description",
       name: "description",
-      type: "string",
+      type: 'array',
+      of: [{type: 'block'}],
       description: "The description for this product",
       validation: (Rule) => Rule.required(),
     },
@@ -48,7 +55,7 @@ export default {
       title: "Price",
       name: "price",
       type: "number",
-      description: "The price of this product",
+      description: "The price of this product (note, this is the first price in USD that we could find in BigCommerce -- there may be other prices available!)",
       validation: (Rule) => Rule.required(),
     },
     {
@@ -61,9 +68,9 @@ export default {
     {
       title: "Category",
       name: "category",
-      description: "Category this product belongs to",
+      description: "Category this product belongs to (used for editorial embeds, etc.)",
       type: "reference",
       to: [{type: "category"}]
-    },
+    }
   ]
 }
