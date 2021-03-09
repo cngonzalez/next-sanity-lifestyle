@@ -9,6 +9,8 @@ export function ProductsDisplay({products, fullSize, copy}
   let displayHorizontal;
   let productDisplays;
 
+  if (!products) { return <span /> }
+
   if (fullSize) {
 
     //if there's only one product and products are on their own row,
