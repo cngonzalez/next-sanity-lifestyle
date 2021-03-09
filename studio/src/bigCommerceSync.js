@@ -72,7 +72,6 @@ const paginatedProductQuery = `
   }
 `
 
-//may be useful to have these methods  available in next as well since it will likely be used there
 const getToken = async () => (
   fetch(`https://api.bigcommerce.com/stores/${storeHash}/v3/storefront/api-token`, {
         method: 'POST',

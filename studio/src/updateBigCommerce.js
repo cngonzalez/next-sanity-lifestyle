@@ -7,14 +7,19 @@ export async function UpdateBigCommerce(props) {
   // X-Auth-Token: {{ACCESS_TOKEN}}
   //grab all fields that start with local
   //to send to BC:
- console.log({
-    "permission_set": "read",
-    "namespace": "location_es",
-    "key": "name",
-    "value": "doc name",
-    "description": "location of the product",
-    "resource_type": "product",
-    "resource_id": 131
-  })
+
+
+  return ({label: "Update BigCommerce", 
+           onHandle: console.log({
+              "permission_set": "read",
+              "namespace": "location_es",
+              "key": "name",
+              "value": "doc name",
+              "description": "location of the product",
+              "resource_type": "product",
+              "resource_id": 131
+            })
+})
+
 
 }

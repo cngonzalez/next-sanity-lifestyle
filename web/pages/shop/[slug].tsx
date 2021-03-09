@@ -81,7 +81,7 @@ export default function ProductPage({categories, productData, preview}
               Product Details
             </Heading>
             <Text>
-              { product.description }
+              <PortableText blocks={ product.description } />
             </Text>
 
           </Stack>
