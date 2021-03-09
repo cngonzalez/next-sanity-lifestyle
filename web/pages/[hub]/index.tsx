@@ -22,8 +22,10 @@ const categoryQuery = groq`
       featuredArticle->{
         _id,
         title,
+        text,
         "slug": slug.current,
         "imageRef": heroImage.asset._ref,
+        "leadImage": leadImage.asset._ref,
         "subsection": subsection->{name, "slug": slug.current},
         "category": subsection->category->{name, "slug": slug.current},
         excerpt
@@ -64,11 +66,12 @@ export default function Hub({categories, subsectionArticleData, categoryFeature,
 
 
   const featuredArticle = category.featuredArticle
+  console.log(featuredArticle)
   const featureProps = {
     title: featuredArticle.title,
-    text: featuredArticle.excerpt,
-    url: `${featuredArticle.category.slug}/${featuredArticle.subsection.slug}/${featuredArticle.slug}`,
-    image: featuredArticle.imageRef
+    text: (featuredArticle.excerpt) ? featuredArticle.excerpt : featuredArticle.text,
+    url: (featuredArticle.category) ?`${featuredArticle.category.slug}/${featuredArticle.subsection.slug}/${featuredArticle.slug}` : featuredArticle.slug,
+    image: (featuredArticle.imageRef) ? featuredArticle.imageRef : featuredArticle.leadImage
   }
 
   const featuredArticleDisplay = handleBlockFeature(category.featuredArticleDisplay, featureProps)
