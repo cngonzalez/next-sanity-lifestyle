@@ -1,7 +1,7 @@
 import {Heading, Stack, Box } from '@sanity/ui'
 import {Article} from '../types'
 import Link from 'next/link'
-import { urlFor } from '$sanityUtils'
+import { urlFor } from '$utils/sanity'
 
 export function ArticlePane({article} : {article: Article}) {
     return (
@@ -11,7 +11,7 @@ export function ArticlePane({article} : {article: Article}) {
             <Box padding={2}>
               <img style={{height: '350px', width: '100%', objectFit: 'cover'}} src={urlFor(article.imageRef) }/>
              </Box>
-            <Heading size={1} margin={2}>
+            <Heading size={1}>
                 {article.title}
               </Heading>
             </Stack>

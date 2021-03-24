@@ -17,12 +17,6 @@ export default {
       validation: (Rule) => Rule.required(),
     },
     {
-      title: "Big Commerce Entity ID",
-      name: "entityId",
-      type: "number",
-      description: "The unique ID of this product in BC (used to ensure that our representation in Sanity is up-to-date with changes in BC)",
-    },
-    {
       title: "Product image",
       name: "productImage",
       type: "image",

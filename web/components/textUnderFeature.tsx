@@ -1,8 +1,7 @@
 import {Heading, Stack, Box, Flex, Text, Button} from '@sanity/ui'
 import {Article} from '../types'
 import Link from 'next/link'
-import { urlFor, PortableText } from '$sanityUtils'
-import { excerptBlockText } from '../utils/helpers'
+import { urlFor, PortableText } from '$utils/sanity'
 
 export function TextUnderFeature({title, text, image, url}
   : {title: string, text: any | any[], image: string, url: string}) {

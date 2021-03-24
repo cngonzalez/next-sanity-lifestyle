@@ -6,7 +6,7 @@ export function Breadcrumbs({article}: {article: Article}) {
 
   return (
 
-      <Box margin={[3, 0, 0, 3]}>
+      <Box margin={[3, 0, 0, 3]} paddingTop={3} paddingLeft={1}>
         <Text size={1}>
           <Link href={`/${article.category.slug}`}>
             { `${article.category.name} >>` }

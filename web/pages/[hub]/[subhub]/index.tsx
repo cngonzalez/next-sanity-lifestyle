@@ -1,6 +1,6 @@
 import { Card } from '@sanity/ui'
 import { GetStaticPaths, GetStaticProps } from 'next'
-import { sanityClient } from '$sanityUtils'
+import { sanityClient } from '$utils/sanity'
 import { useRouter } from 'next/router'
 import { NavBar, SubsectionBar, FeaturedArticle } from '$components'
 import { Category, Article, SubsectionArticles } from '../../types'

@@ -11,8 +11,8 @@ export default {
       validation: (Rule) => Rule.required(),
     },
     {
-      title: "Lead image",
-      name: "leadImage",
+      title: "Hero image",
+      name: "heroImage",
       type: "image",
       description: "The image used to promote this campaign (for example, if featured on index page or hubs)",
       options: {
@@ -43,13 +43,19 @@ description: "Short descriptive text that may be used to promote this campaign",
       type: 'date',
     },
     {
+      title: 'Hide lead block',
+      name: 'hideLeadBlock',
+      description: 'Toggle to show if you want to display the hero image, title, and description at the top of the campaign page',
+      type: 'boolean',
+    },
+    {
       title: 'Content', 
       name: 'content',
       type: 'array', 
       description: "The content to show on the campaign page. The image and text you use for the first block will also be used internally across the site.",
         of: [
           //todo: consider block quotes -- maybe just an object that allows you to do a text block?
-          {type: 'productsDisplay'},
+          {type: 'productCardFeature'},
           {type: 'solidBlockFeature'},
           {type: 'textOverlayFeature'},
         ]

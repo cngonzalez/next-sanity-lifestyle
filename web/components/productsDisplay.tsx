@@ -1,12 +1,12 @@
 import { Flex, Stack, Grid, Text, Box } from '@sanity/ui'
 import { ProductDisplay } from '$components'
-import { urlFor, PortableText } from '$sanityUtils'
+import { urlFor, PortableText } from '$utils/sanity'
 import Link from 'next/link'
 import { Product } from '../types'
 
 export function ProductsDisplay({products, fullSize, copy}
   : {products: Product[], fullSize: boolean, copy: any[] | any}) {
-  let displayHorizontal;
+  let displayHorizontal: boolean;
   let productDisplays;
 
   if (!products) { return <span /> }
@@ -22,14 +22,15 @@ export function ProductsDisplay({products, fullSize, copy}
         key={i}
         product={product}
         displayHorizontal={displayHorizontal}
+        width={150}
         shopNow />))
 
 
-    //row or grid
+    //4 products get a grid, fewer get a flex
     if (products.length < 4) {
       return ( <Flex wrap='wrap' justify='center'>{productDisplays}</Flex> )
     } else {
-      return ( <Grid>{productDisplays.slice(0, 4)}</Grid> )
+      return ( <Grid columns={[1,1,2]}>{productDisplays.slice(0, 4)}</Grid> )
     }
   } 
 
@@ -43,24 +44,26 @@ export function ProductsDisplay({products, fullSize, copy}
         key={i}
         product={product}
         displayHorizontal={displayHorizontal}
+        width={150}
         shopNow />))
 
     const finalDisplay = <Stack>{productDisplays.slice(0,3)}</Stack>
 
-    //last check in case of user error -- don't make empty space of 65% if there's no copy!
     if (copy && typeof(copy) != 'undefined') {
       return (
-        <Flex wrap='wrap' align='center'>
-          <Box flex={2} paddingX={2}>
-            <Text>
-              <PortableText blocks={copy}/>
-            </Text>
-          </Box>
-          <Box flex={1}>{finalDisplay}</Box>
-        </Flex>
+        <Box paddingY={4}>
+          <Flex wrap='wrap' align='center'>
+            <Box flex={1} paddingX={1}>
+              <Text>
+                <PortableText blocks={copy}/>
+              </Text>
+            </Box>
+            <Stack flex={1}>{finalDisplay}</Stack>
+          </Flex>
+        </Box>
       )
     } else {
-      return ( finalDisplay )
+      return ( <Box paddingY={4}>{finalDisplay}</Box> )
     }
   }
 }

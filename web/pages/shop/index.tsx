@@ -1,6 +1,6 @@
 import { Box, Grid, Heading } from '@sanity/ui'
 import { GetStaticPaths, GetStaticProps } from 'next'
-import { sanityClient } from '$sanityUtils'
+import { sanityClient } from '$utils/sanity'
 import { Category, CategoryProducts } from '../../types'
 import { NavBar, ShopGrid } from '$components'
 

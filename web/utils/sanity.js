@@ -21,8 +21,9 @@ const config = {
 }
 
 export const sanityClient = createClient(config);
-export const urlFor = (source) => createImageUrlBuilder(config).image(source);
-//
+//TODO: put placeholder "problem fetching image!" as default
+export const urlFor = (source) => createImageUrlBuilder(config).image(source) || "";
+
 // Set up a preview client with serverless authentication for drafts
 export const previewClient = createClient({
   ...config,
@@ -37,8 +38,6 @@ export const usePreviewSubscription = createPreviewSubscriptionHook(config);
 
 export const PortableText = createPortableTextComponent({
   ...config,
-  // Serializers passed to @sanity/block-content-to-react
-  // (https://github.com/sanity-io/block-content-to-react)
   serializers: {
     types: {
       listItemGroup: props => (<ListItemGroup listItems={props.node.children} />),

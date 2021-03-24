@@ -6,7 +6,7 @@ export const GlobalStyle = createGlobalStyle((props: {theme: Theme}) => {
   //TODO: control in studio?
   const {theme} = props
   const colorBase = theme.sanity.color.base
-  const color = {...colorBase.fg, bg: "#FCFCFF"}
+  const color = {fg: colorBase.fg, bg: "#FCFCFF"}
 
 
   return css`

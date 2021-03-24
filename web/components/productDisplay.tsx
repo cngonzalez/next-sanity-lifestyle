@@ -1,24 +1,19 @@
 import { Stack, Flex, Text, Box } from '@sanity/ui'
-import { urlFor } from '$sanityUtils'
+import { urlFor } from '$utils/sanity'
+import { ResponsiveFixedRatioImage } from '$components'
 import Link from 'next/link'
 
-export function ProductDisplay({product, displayHorizontal, shopNow}
-  : {product: any, displayHorizontal: boolean, shopNow: boolean}) {
+export function ProductDisplay({product, displayHorizontal, shopNow, width}
+  : {product: any, displayHorizontal: boolean, shopNow: boolean, width: number}) {
 
   const imgBox = (
-    <Box style={{width: '225px', margin: '0 auto'}}>
-      <img style={{height: '225px',
-        width: '100%',
-        objectFit: 'cover',
-        borderRadius: '50%'
-        }}
-      src={urlFor(product.image)} />
+    <Box style={{width: `${width}px`}}>
+      <ResponsiveFixedRatioImage imageUrl={urlFor(product.image)} />
     </Box>
   )
 
   const productInfo = (
-    <Box>
-      <Text style={{textAlign: 'center'}}>
+    <Text style={{textAlign: 'center', margin: 'auto 0', width: `${width}px`}}>
 
         <span style={{fontSize: '.9em'}}>
           {product.manufacturer}<br/>
@@ -39,22 +34,23 @@ export function ProductDisplay({product, displayHorizontal, shopNow}
         </span>
 
       </Text>
-    </Box>
   )
 
   if (displayHorizontal) {
     return (
-      <Flex justify='space-between' style={{width: '100%'}}>
+      <Flex justify='center'  style={{width: '100%', margin: '0 auto'}}>
         { imgBox }
         { productInfo }
       </Flex>
     )
   } else {
     return (
-      <Stack padding={1}>
-        { imgBox }
-        { productInfo }
-      </Stack>
+      <Box paddingX={4}>
+        <Stack>
+          { imgBox }
+          { productInfo }
+        </Stack>
+      </Box>
     )
   }
 }

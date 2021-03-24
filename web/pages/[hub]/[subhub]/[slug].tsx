@@ -6,47 +6,50 @@ import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
 import { Stack, Card, Box, Heading, Text, Container, Flex } from '@sanity/ui'
-import { NavBar, SocialBar, Breadcrumbs } from '$components'
-import { Category, Article, ArticleData } from '../../types'
-import { getClient, urlFor, PortableText, usePreviewSubscription } from '$sanityUtils'
+import { NavBar, SocialBar, Breadcrumbs, ShopTheStory } from '$components'
+import { Category, Article, ArticleSlug } from '../../../types'
+import { getClient, urlFor, PortableText, usePreviewSubscription } from '$utils/sanity'
 import { handleGroupedItems } from '$helpers'
 
 
 const articleQuery = groq`
-      *[_type == "article" && slug.current == $slug]{
+      *[_type == "article" && slug.current == $slug][0]{
           title, 
           "slug": slug.current,
           authors,
           "subsection": subsection->{name, "slug": slug.current},
           "category": subsection->category->{name, "slug": slug.current},
-          content[]{
-              ...,
-              _type == 'listItem'=>{
+          "storyProducts": content[]{
+              _type == 'listItem' || _type == 'productsDisplay'=>{
                 products[]->{
                   name, price, description, manufacturer,
                   'slug': slug.current,
                   'image': productImage.asset._ref
                 }
               },
-              _type == 'productsDisplay'=>{
+            },
+          content[]{
+              ...,
+              _type == 'listItem' ||  _type == 'productsDisplay'=>{
                 products[]->{
                   name, price, description, manufacturer,
                   'slug': slug.current,
                   'image': productImage.asset._ref
                 }
-              }
+              },
             },
-          "imageRef": heroImage.asset._ref
-         }[0]`
+            "image": {"asset": heroImage.asset, "crop": heroImage.crop, "hotspot": heroImage.hotspot}
+         }`
 
 
 export default function ArticlePage({categories, articleData, preview}
-  : {categories: Category[], articleData: ArticleData, preview: boolean}) {
+  : {categories: Category[], articleData: Article, preview: boolean}) {
 
   const router = useRouter();
   if (!router.isFallback && !articleData?.slug) {
     return <Error statusCode={404} />;
   }
+
 
   const {data: article} = usePreviewSubscription(articleQuery, {
     params: {slug: articleData.slug},
@@ -54,9 +57,8 @@ export default function ArticlePage({categories, articleData, preview}
     enabled: preview || router.query.preview !== null,
   })
 
-  let content = handleGroupedItems(
+  const content = handleGroupedItems(
     article.content, "listItem", {_key: "orientation", _value: "vertical"})
-
       
   return (
     <>
@@ -67,12 +69,12 @@ export default function ArticlePage({categories, articleData, preview}
         <Box paddingLeft={3} flex={2}>
           <Stack space={2}>
             <SocialBar />
-            <Box style={{maxHeight: '100vh'}}>
-              <img src={urlFor(article.imageRef) } 
+            <Box style={{maxHeight: '800px'}}>
+              <img src={urlFor(article.image) } 
                 style={{width: "100%", height: "100%", objectFit: "cover"}}/>
             </Box>
               <Box padding={[1, 3, 4]}>
-                <Heading size={[2, 3, 4]} padding={4}>
+                <Heading size={[2, 3, 4]}>
                   { article.title }
                 </Heading>
                 <Text>
@@ -81,7 +83,11 @@ export default function ArticlePage({categories, articleData, preview}
               </Box>
             </Stack>
           </Box>
-         <Box padding={1} flex={[0, 0, 0, 1]} />
+         <Flex align='center' flex={[0, 0, 0, 1]}>
+           <Box>
+             <ShopTheStory products={article.storyProducts} />
+          </Box>
+         </Flex>
         </Flex>
     </>
   )
@@ -97,7 +103,7 @@ export const getStaticPaths: GetStaticPaths = async (context) => {
     }`)
 
   const paths = {paths: articleSlugs.map(
-    (slugs) => ({params: slugs}))}
+    (slugs: ArticleSlug) => ({params: slugs}))}
     return {
       ...paths,
      fallback: true

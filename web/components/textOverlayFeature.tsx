@@ -1,13 +1,12 @@
 import {Heading, Box, Flex, Text, Button} from '@sanity/ui'
 import {Article} from '../types'
 import Link from 'next/link'
-import { urlFor, PortableText } from '$sanityUtils'
-import { excerptBlockText } from '../utils/helpers'
+import { urlFor, PortableText } from '$utils/sanity'
 import styled from 'styled-components'
 
 
-export function TextOverlayFeature({title, text, image, url}
-  : {title: string, text: any | any[], image: string, url: string}) {
+export function TextOverlayFeature({title, text, image, url, fullSize}
+  : {title: string, text: any | any[], image: string, url: string, fullSize: boolean}) {
 
   const OverlayBox = styled.div`
     background: 
@@ -30,7 +29,7 @@ export function TextOverlayFeature({title, text, image, url}
     `
 
     return  (
-        <Box flex={1} style={{ minWidth: '350px', height: "400px"}}>  
+      <Box flex={1} style={{ minWidth: '350px', height: (fullSize) ? '100vh' : '400px'}}>  
           <OverlayBox>
             <OverlayText>
               <Heading size={3}>

@@ -1,21 +1,31 @@
 import { GetStaticProps, GetStaticPaths } from 'next'
 import Error from 'next/error'
-import { Product, Category } from '../../types'
-import { getClient, urlFor, PortableText, usePreviewSubscription } from '$sanityUtils'
 import { groq } from "next-sanity"
-import { NavBar, SubsectionBar } from '$components'
-import { Stack, Inline, Button, Box, Heading, Text, Badge, Flex } from '@sanity/ui'
 import { useRouter } from 'next/router'
+
+import { Stack, Inline, Button, Box, Heading, Text, Badge, Flex, Grid } from '@sanity/ui'
+
+import { Product, Category } from '../../types'
+import { useStore, useAddItem } from '../../contexts/bigcommerce-context'
+
+import { getClient, urlFor, PortableText, usePreviewSubscription } from '$utils/sanity'
+import { handleLocaleField } from '$utils/helpers'
+import { NavBar, SubsectionBar, ResponsiveFixedRatioImage } from '$components'
 
   const productQuery = groq`
     *[_type == 'product' && slug.current == $slug][0]
     {
+      _id,
       'slug': slug.current,
       'image': productImage.asset._ref,
       name,
       description,
       price,
       manufacturer,
+      locale_es_name,
+      locale_es_description,
+      locale_fr_name,
+      locale_fr_description,
      'relatedArticles': *[_type == 'article' && references(^._id)][0..2]
      {
         _id,
@@ -37,36 +47,27 @@ export default function ProductPage({categories, productData, preview}
   }
 
   const {data: product} = usePreviewSubscription(productQuery, {
-    params: {slug: productData.slug},
+    params: {slug: router.query.slug},
     initialData: productData,
     enabled: preview || router.query.preview !== null,
   })
 
+  const addItemToCart = useAddItem() 
+
   return (
     <>
       <NavBar categories={categories} />
-      <Flex padding={4} wrap="wrap">
-        <Box flex={1} padding={5} style={{minWidth: '300px'}}>
-            <img 
-              style={
-                {height: '100%',
-                 width: '100%',
-                 objectFit: 'cover',
-                 borderRadius: '50%',
-                 maxWidth: '500px'
-                }
-              }
-              src={urlFor(product.image)
-                    .height(2000)
-                    .width(2000)}/>
-        </Box> 
-        <Box flex={1} margin={4} style={{minWidth: '300px'}}>
+      <Grid columns={[1, 1, 1, 2]}>
+        <Flex flex={1} justify='center' margin={5} padding={[2, 3, 5]}>
+          <ResponsiveFixedRatioImage imageUrl={urlFor(product.image)} />
+        </Flex> 
+        <Box flex={1} margin={4} style={{minWidth: '200px'}}>
           <Stack space={4} >
             <Text style={{textTransform: 'uppercase', fontWeight: 'bold'}}>
               { product.manufacturer }
             </Text>
             <Heading size={4}>
-              {product.name}
+              { handleLocaleField('name', product, router.locale) }
             </Heading>
             <Text>
               <Inline space={2}>
@@ -75,40 +76,45 @@ export default function ProductPage({categories, productData, preview}
               </Inline>
             </Text>
             <hr />
-            <Button text='Add to Bag' mode='ghost' /> 
+            <Button text='Add to Bag' mode='ghost' 
+              onClick={() => addItemToCart(product._id)}
+            /> 
             <hr /> 
             <Heading size={1}>
               Product Details
             </Heading>
             <Text>
-              <PortableText blocks={ product.description } />
+              <PortableText blocks={ handleLocaleField('description', product, router.locale) } />
             </Text>
 
           </Stack>
         </Box>
-      </Flex> 
+      </Grid> 
       <SubsectionBar hub="" subsectionArticles={{name: "See Related Articles", articles: product.relatedArticles}} /> 
     </>
     )
 }
             
-export const getStaticPaths: GetStaticPaths = async (context) => {
+export const getStaticPaths: GetStaticPaths = async ({locales}) => {
   const productSlugs = await getClient().fetch(
     `*[_type == "product"]{
       'slug': slug.current
     }`)
 
-  const paths = {paths: productSlugs.map(
-    (slugObj) => ({params: slugObj}))}
+  const slugsWithLocales = locales.map(locale => (
+              productSlugs.map(slug => (
+                {params: {...slug}, locale: locale}
+              ))
+  )).flat()
+
     return {
-      ...paths,
+      paths: slugsWithLocales,
      fallback: true
    }
 }
 
 export const getStaticProps: GetStaticProps = async ({params, preview = false}) => {
   const product = await getClient(preview).fetch(productQuery, params)
-
 
   return ({
     props: {

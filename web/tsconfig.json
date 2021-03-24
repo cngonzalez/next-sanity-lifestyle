@@ -16,9 +16,9 @@
     "baseUrl": ".",
     "paths": {
       "$components": ["./components"],
-      "$pageComponents": ["./components/page-components"],
       "$theme": ["./theme"],
-      "$sanityUtils": ["./utils/sanity"],
+      "$utils": ["./utils"],
+      "$utils/*": ["./utils/*"],
       "$helpers": ["./utils/helpers"]
     }
   },

@@ -1,6 +1,6 @@
 export default {
-  title: "Text Overlay Feature",
-  name: "textOverlayFeature",
+  title: "Product Card Feature",
+  name: "productCardFeature",
   type: "object",
   fields: [
     {
@@ -18,15 +18,15 @@ export default {
       of: [{type: 'block'}],
     },
     {
-      title: "Image",
-      name: "image",
-      type: "image",
-      description: "The image to be used for this block",
-      options: {
-        crop: true,
-        hotspot: true
-      }
-    },
-  ]
+      title: "Products",
+      name: "products",
+      description: "The products for this list item",
+      type: "array",
+      of: [{type: "reference",
+            to: [
+                  {type: "product"}
+                ]
+          }]
+    }
+  ],
 }
-

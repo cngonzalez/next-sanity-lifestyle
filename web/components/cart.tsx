@@ -1,20 +1,42 @@
 import React from 'react'
-import { useStore, useToggleCart } from '../contexts/bigcommerce-context'
 import { Dialog, Box, Text } from '@sanity/ui'
 
-export const Cart = () => {
-  const { isCartOpen, isUpdating } = useStore()
-  const toggleCart = useToggleCart()
+import { useStore, useToggleCart } from '../contexts/bigcommerce-context'
+import { CartProductDisplay } from '$components'
 
-  return (isCartOpen && (
-    <Dialog
-      header='Your cart'
-      id='cart'
-      onClose={toggleCart}
-      zOffset={1000}>
-        <Box padding={4}>
-          <Text>Content</Text>
-        </Box>
-    </Dialog>
+export const Cart = () => {
+  const { isCartOpen, cart } = useStore()
+  const toggleCart = useToggleCart()
+  let cartDisplay;
+
+  const products = cart.line_items.map((product, i) => (
+      <CartProductDisplay
+        key={`cart-${i}`}
+        product={product}
+        displayHorizontal={true}
+        width={100}
+        shopNow={false} />
   ))
+
+  if (isCartOpen) {
+    cartDisplay = (
+      <Dialog
+        header='Your cart'
+        id='cart'
+        onClose={toggleCart}
+        zOffset={1000}>
+          <Box padding={4}>
+            { products } 
+          </Box>
+      </Dialog>
+    )
+  } else {
+    cartDisplay = <span />
+  }
+
+  return  (
+    <React.Fragment>
+      {cartDisplay}
+    </React.Fragment>  
+    )
 }

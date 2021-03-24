@@ -2,10 +2,10 @@ import {
   TextOverlayFeature,
   TextUnderFeature,
   SolidBlockFeature,
-  ProductsDisplay
+  ProductCardFeature,
 } from '../components'
+
 //grouped items might be list items, product displays, etc. 
-//abstract back out for all items
 export function handleGroupedItems(content, key, additionalFilter) {
   let finalBlocks = []
   let verticalGroup = {_key: null, _type: `${key}Group`, children: []}
@@ -37,29 +37,21 @@ export function handleGroupedItems(content, key, additionalFilter) {
   return finalBlocks
 }
 
-//implicit assumption here that any "featured" article will have about a sentence of
-//"unspecial" text up front
-export function excerptBlockText(block, excerptLength) {
-  const snippet = block.children[0].text.split(" ").slice(0, excerptLength).join(" ") 
-  return `${snippet}...`
-}
-
-
-export function handleBlockFeature(featureType, props) {
+export function handleBlockFeature(featureType, props, fullSize) {
   let featureDisplay;
+
   switch(featureType) {
     case 'textBelowFeature':
       featureDisplay = <TextUnderFeature {...props} />
       break;
     case 'textOverlayFeature':
-      featureDisplay = <TextOverlayFeature {...props} />
+      featureDisplay = <TextOverlayFeature fullSize={fullSize} {...props} />
       break;
     case 'solidBlockFeature':
-      console.log(props)
       featureDisplay = <SolidBlockFeature {...props} />
       break;
-    case 'productsDisplay':
-      featureDisplay = <ProductsDisplay {...props} />
+    case 'productCardFeature':
+      featureDisplay = <ProductCardFeature {...props} />
       break;
     default: 
       featureDisplay = <TextUnderFeature {...props} />
@@ -67,4 +59,13 @@ export function handleBlockFeature(featureType, props) {
 
   return featureDisplay
 
+}
+
+
+export function handleLocaleField(fieldName, obj, locale) {
+  if (!locale || locale == 'en-US') {
+    return obj[fieldName]
+  } else {
+    return obj[`locale_${locale}_${fieldName}`]
+  }
 }

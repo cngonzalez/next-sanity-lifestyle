@@ -3,7 +3,7 @@ import Error from 'next/error'
 import { Product, Category } from '../../types'
 import { groq } from "next-sanity"
 import { NavBar, ShopGrid, SolidBlockFeature } from '$components'
-import { getClient, urlFor, PortableText, usePreviewSubscription } from '$sanityUtils'
+import { getClient, urlFor, PortableText, usePreviewSubscription } from '$utils/sanity'
 import { handleBlockFeature } from '$helpers'
 import { Stack, Box } from '@sanity/ui'
 import { useRouter } from 'next/router'
@@ -12,12 +12,13 @@ import { useRouter } from 'next/router'
     *[_type == 'campaign' && slug.current == $slug][0]
     {
      'slug': slug.current,
-     'image': leadImage.asset._ref,
+     'image': heroImage.asset._ref,
       title,
       text,
+      hideLeadBlock,
       content[]{
         ...,
-        _type == 'productsDisplay'=>{
+        _type == 'productCardFeature'=>{
           products[]->{
             name, price, description, manufacturer,
             'slug': slug.current,
@@ -50,8 +51,8 @@ export default function CampaignPage({categories, campaignData, preview}
   })
 
   const parsedContent = campaign.content.map(({_type, ...block}, i) => (
-    <Box key={i}>
-      { handleBlockFeature(_type, block) }
+    <Box key={i} padding={0}>
+      { handleBlockFeature(_type, block, true) }
     </Box>
   ))
 
@@ -65,8 +66,8 @@ export default function CampaignPage({categories, campaignData, preview}
   return (
     <>
       <NavBar categories={categories} />
-      <Stack space={0}>
-        <SolidBlockFeature {...campaignFeatureProps} />
+      <Stack>
+        { (campaign.hideLeadBlock) ?  <span /> : <SolidBlockFeature {...campaignFeatureProps} /> }
         { parsedContent }
       </Stack>
       <ShopGrid sectionTitle="Shop the Campaign" products={campaign.products} />

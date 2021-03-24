@@ -1,7 +1,7 @@
 import { Heading, Text, Box} from '@sanity/ui'
 import { ListItem } from '../types'
 import { ProductsDisplay } from '$components'
-import { urlFor, PortableText } from '$sanityUtils'
+import { urlFor, PortableText } from '$utils/sanity'
 
 export function ListItemCard({item, groupParent}
            : {item: ListItem, groupParent: boolean}) {
@@ -16,7 +16,7 @@ export function ListItemCard({item, groupParent}
         display = (
           <>
             <PortableText blocks={item.text} />
-            <ProductsDisplay products={item.products} fullSize={true} />
+            <ProductsDisplay copy ="" products={item.products} fullSize={true} />
           </>
           )
       }
@@ -24,7 +24,7 @@ export function ListItemCard({item, groupParent}
         display = (
           <>
             <PortableText blocks={item.text} />
-            <ProductsDisplay products={item.products} fullSize={false} />
+            <ProductsDisplay copy="" products={item.products} fullSize={false} />
           </>
           )
     }

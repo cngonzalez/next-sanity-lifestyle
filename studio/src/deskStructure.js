@@ -84,48 +84,57 @@ async function buildList() {
   return (
     S.list()
       .title('Content')
-      .items([...await categoriesToListItems(),
-             S.divider(), 
-             S.documentTypeListItem('person'),
-             S.divider(), 
-             S.listItem()
-                .title("Shop")
-                .child(
-                  S.documentTypeList('product')
-                    .child(id => 
-                      S.document()
-                        .schemaType('product')
-                        .documentId(id)
-                        .views([
-                          S.view.form(),
-                          S.view.component(document => IFramePreview(document, 'shop'))
-                            .title('Web Preview')
-                            .icon(MdRemoveRedEye),
-                          S.view.component(document => MobilePreview(document, 'shop'))
-                            .title('Mobile Preview')
-                            .icon(MdStayPrimaryPortrait)
-                        ])
-                    )
-              ),
-             S.documentTypeListItem('campaign')
-                .child(
-                  S.documentTypeList('campaign')
-                    .child(id => 
-                      S.document()
-                        .schemaType('campaign')
-                        .documentId(id)
-                        .views([
-                          S.view.form(),
-                          S.view.component(document => IFramePreview(document, 'shop/campaign'))
-                            .title('Web Preview')
-                            .icon(MdRemoveRedEye),
-                          S.view.component(document => MobilePreview(document, 'shop/campaign'))
-                            .title('Mobile Preview')
-                            .icon(MdStayPrimaryPortrait)
-                        ])
-                    )
+      .items([
+        S.listItem()
+          .title('Site settings')
+          .child(
+            S.editor()
+              .schemaType('siteSettings')
+              .documentId('siteSettings')
+          ),
+        S.divider(),
+        ...await categoriesToListItems(),
+         S.divider(), 
+         S.documentTypeListItem('person'),
+         S.divider(), 
+         S.listItem()
+            .title("Shop")
+            .child(
+              S.documentTypeList('product')
+                .child(id => 
+                  S.document()
+                    .schemaType('product')
+                    .documentId(id)
+                    .views([
+                      S.view.form(),
+                      S.view.component(document => IFramePreview(document, 'shop'))
+                        .title('Web Preview')
+                        .icon(MdRemoveRedEye),
+                      S.view.component(document => MobilePreview(document, 'shop'))
+                        .title('Mobile Preview')
+                        .icon(MdStayPrimaryPortrait)
+                    ])
                 )
-           ])
+          ),
+         S.documentTypeListItem('campaign')
+            .child(
+              S.documentTypeList('campaign')
+                .child(id => 
+                  S.document()
+                    .schemaType('campaign')
+                    .documentId(id)
+                    .views([
+                      S.view.form(),
+                      S.view.component(document => IFramePreview(document, 'shop/campaign'))
+                        .title('Web Preview')
+                        .icon(MdRemoveRedEye),
+                      S.view.component(document => MobilePreview(document, 'shop/campaign'))
+                        .title('Mobile Preview')
+                        .icon(MdStayPrimaryPortrait)
+                    ])
+                )
+            )
+       ])
   )
 }
 

@@ -1,17 +1,14 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import { groq } from "next-sanity"
-import { Category, Article, SubsectionArticles, CategoryFeature } from '../../types'
+import { Category, SubsectionArticles, CategoryFeature } from '../../types'
 
 import { Box, Container, Heading, Inline } from '@sanity/ui'
-import { NavBar, SubsectionBar, FeaturedArticle,
-  TextOverlayFeature, TextUnderFeature, SolidBlockFeature } from '$components'
+import { NavBar, SubsectionBar } from '$components'
 import { handleBlockFeature } from '$helpers'
 
-import { getClient, usePreviewSubscription } from '$sanityUtils'
+import { getClient, usePreviewSubscription } from '$utils/sanity'
 import { GiWomanElfFace } from 'react-icons/gi'
-
-import { excerptBlockText } from '../../utils/helpers'
 
 const categoryQuery = groq`
   *[_type == 'category' && slug.current == $hub][0]
@@ -23,9 +20,9 @@ const categoryQuery = groq`
         _id,
         title,
         text,
+        publishedDate,
         "slug": slug.current,
         "imageRef": heroImage.asset._ref,
-        "leadImage": leadImage.asset._ref,
         "subsection": subsection->{name, "slug": slug.current},
         "category": subsection->category->{name, "slug": slug.current},
         excerpt
@@ -39,9 +36,10 @@ const subsectionArticleQuery = groq`
       "slug": slug.current,
       "articles": *[_type == 'article' 
     && references(^._id) && _id != $featuredArticleId] 
-        | order('publishedDate' desc)[0..1]{
+        | order('publishedDate' desc)[0...2]{
            _id,
            title,
+           publishedDate,
            "slug": slug.current,
            "imageRef": heroImage.asset._ref,
            "subsection": subsection->{name, "slug": slug.current},
@@ -56,7 +54,7 @@ export default function Hub({categories, subsectionArticleData, categoryFeature,
     preview: boolean}) {
 
   const router = useRouter()
-  const hub = router.query.hub
+  const hub = router.query.hub ?? ""
 
   const {data: category} = usePreviewSubscription(categoryQuery, {
     params: {hub: hub},
@@ -66,12 +64,11 @@ export default function Hub({categories, subsectionArticleData, categoryFeature,
 
 
   const featuredArticle = category.featuredArticle
-  console.log(featuredArticle)
   const featureProps = {
     title: featuredArticle.title,
     text: (featuredArticle.excerpt) ? featuredArticle.excerpt : featuredArticle.text,
-    url: (featuredArticle.category) ?`${featuredArticle.category.slug}/${featuredArticle.subsection.slug}/${featuredArticle.slug}` : featuredArticle.slug,
-    image: (featuredArticle.imageRef) ? featuredArticle.imageRef : featuredArticle.leadImage
+    url: (featuredArticle.category) ?`${featuredArticle.category.slug}/${featuredArticle.subsection.slug}/${featuredArticle.slug}` : `shop/campaign/${featuredArticle.slug}`,
+    image:  featuredArticle.imageRef
   }
 
   const featuredArticleDisplay = handleBlockFeature(category.featuredArticleDisplay, featureProps)
@@ -90,8 +87,6 @@ export default function Hub({categories, subsectionArticleData, categoryFeature,
             <SubsectionBar hub={hub} subsectionArticles={subsection} key={i} /> 
           )
   )
-
-    
 
   return (
     <>
@@ -120,7 +115,7 @@ export const getStaticPaths: GetStaticPaths = async (context) => {
     `*[_type == "category"].slug.current`)
 
     return {
-      ...{paths: categories.map((cat) => ({params: {hub: cat}}))},
+      ...{paths: categories.map((cat: string) => ({params: {hub: cat}}))},
      fallback: true
    }
 }

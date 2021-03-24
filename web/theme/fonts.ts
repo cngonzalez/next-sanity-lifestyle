@@ -54,7 +54,7 @@ export const fonts: ThemeFonts = {
   },
   heading: {
     family:
-      'Larsseit, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif',
+      'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif',
     weights: {
       regular: 700,
       medium: 800,
