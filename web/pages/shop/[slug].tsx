@@ -1,6 +1,5 @@
 import { GetStaticProps, GetStaticPaths } from 'next'
 import Error from 'next/error'
-import { groq } from "next-sanity"
 import { useRouter } from 'next/router'
 
 import { Stack, Inline, Button, Box, Heading, Text, Badge, Flex, Grid } from '@sanity/ui'
@@ -12,31 +11,7 @@ import { getClient, urlFor, PortableText, usePreviewSubscription } from '$utils/
 import { handleLocaleField } from '$utils/helpers'
 import { NavBar, SubsectionBar, ResponsiveFixedRatioImage } from '$components'
 
-  const productQuery = groq`
-    *[_type == 'product' && slug.current == $slug][0]
-    {
-      _id,
-      'slug': slug.current,
-      'image': productImage.asset._ref,
-      name,
-      description,
-      price,
-      manufacturer,
-      locale_es_name,
-      locale_es_description,
-      locale_fr_name,
-      locale_fr_description,
-     'relatedArticles': *[_type == 'article' && references(^._id)][0..2]
-     {
-        _id,
-        title,
-        "slug": slug.current,
-        "imageRef": heroImage.asset._ref,
-        "subsection": subsection->{name, "slug": slug.current},
-        "category": subsection->category->{name, "slug": slug.current},
-        content
-      }
-    }`
+import { productDetailPageQuery }  from '$utils/sanityGroqQueries'
 
 export default function ProductPage({categories, productData, preview}
   : {categories: Category[], productData: Product, preview: boolean}) {
@@ -46,7 +21,7 @@ export default function ProductPage({categories, productData, preview}
     return <Error statusCode={404} />;
   }
 
-  const {data: product} = usePreviewSubscription(productQuery, {
+  const {data: product} = usePreviewSubscription(productDetailPageQuery, {
     params: {slug: router.query.slug},
     initialData: productData,
     enabled: preview || router.query.preview !== null,
@@ -114,7 +89,7 @@ export const getStaticPaths: GetStaticPaths = async ({locales}) => {
 }
 
 export const getStaticProps: GetStaticProps = async ({params, preview = false}) => {
-  const product = await getClient(preview).fetch(productQuery, params)
+  const product = await getClient(preview).fetch(productDetailPageQuery, params)
 
   return ({
     props: {

@@ -13,7 +13,7 @@ export default async function BigCommerceCart(req, res) {
 
   try {
     if (req.method == 'POST') {
-      bcCartResponse = await fetch(`${process.env.BIGCOMMERCE_API_URL}/v3/carts`, {
+        bcCartResponse = await fetch(`${process.env.BIGCOMMERCE_API_URL}/carts`, {
              method: "POST",
              ...bigCommerceHeaders,
              body: JSON.stringify({line_items: []})
@@ -58,8 +58,7 @@ export default async function BigCommerceCart(req, res) {
     else {
       return res.status(400).json({error: 'Invalid request method -- check the code in the BigCommerce context provider.'})
     }
-
-    console.log(bcCartResponse)
+//
     //TODO: check status of bcCartResponse (400, etc.) and return meaningful message
     return res.status(200).json(bcCartResponse) 
 

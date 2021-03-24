@@ -1,40 +1,15 @@
 import { GetStaticProps, GetStaticPaths } from 'next'
 import Error from 'next/error'
-import { Product, Category } from '../../types'
-import { groq } from "next-sanity"
-import { NavBar, ShopGrid, SolidBlockFeature } from '$components'
-import { getClient, urlFor, PortableText, usePreviewSubscription } from '$utils/sanity'
-import { handleBlockFeature } from '$helpers'
-import { Stack, Box } from '@sanity/ui'
 import { useRouter } from 'next/router'
+import { Stack, Box } from '@sanity/ui'
 
-  const campaignQuery = groq`
-    *[_type == 'campaign' && slug.current == $slug][0]
-    {
-     'slug': slug.current,
-     'image': heroImage.asset._ref,
-      title,
-      text,
-      hideLeadBlock,
-      content[]{
-        ...,
-        _type == 'productCardFeature'=>{
-          products[]->{
-            name, price, description, manufacturer,
-            'slug': slug.current,
-            'image': productImage.asset._ref
-          }
-        }
-      },
-      products[]->{
-        'slug': slug.current,
-        'image': productImage.asset._ref,
-        name,
-        description,
-        price,
-        manufacturer
-      }
-    }`
+import { Product, Category } from '../../types'
+import { getClient, urlFor, PortableText, usePreviewSubscription } from '$utils/sanity'
+import { campaignQuery }  from '$utils/sanityGroqQueries'
+
+import { NavBar, ShopGrid, SolidBlockFeature } from '$components'
+import { handleBlockFeature } from '$utils/helpers'
+
 
 export default function CampaignPage({categories, campaignData, preview}
   : {categories: Category[], campaignData: Campaign, preview: boolean}) {

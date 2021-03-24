@@ -69,3 +69,14 @@ export function handleLocaleField(fieldName, obj, locale) {
     return obj[`locale_${locale}_${fieldName}`]
   }
 }
+
+
+//slightly different naming conventions and routing on articles and features, make them uniform!
+export function coalesceCampaignAndFeature(featuredArticle) {
+  return {
+    title: featuredArticle.title,
+    text: (featuredArticle.excerpt) ? featuredArticle.excerpt : featuredArticle.text,
+    url: (featuredArticle.category) ?`${featuredArticle.category.slug}/${featuredArticle.subsection.slug}/${featuredArticle.slug}` : `shop/campaign/${featuredArticle.slug}`,
+    image:  featuredArticle.image
+  }
+}

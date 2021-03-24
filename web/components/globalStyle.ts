@@ -53,34 +53,5 @@ export const GlobalStyle = createGlobalStyle((props: {theme: Theme}) => {
       margin: 0;
     }
 
-  .hubHeader {
-    line-height: 0.1;
-    text-align: center;
-  }
-
-  .hubHeader span {
-    display: inline-block;
-    position: relative;  
-  }
-
-  .hubHeader span:before,
-  .hubHeader span:after {
-    content: "";
-    position: absolute;
-    height: 5px;
-    border-top: 1px solid grey;
-    top: 0;
-    max-width: 400px;
-    min-width: 100%;
-  }
-  .hubHeader span:before {
-    right: 100%;
-    margin-right: 15px;
-  }
-  .hubHeader span:after {
-    left: 100%;
-    margin-left: 15px;
-  }
-
       `
 })

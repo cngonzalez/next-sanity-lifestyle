@@ -26,7 +26,7 @@ const BigCommerceContext = createContext({
 const setCartState = async (cart, setStore, openCart) => {
 
 // Save cart to localstorage
-  if (typeof window !== `undefined`) {
+  if (typeof window !== `undefined` && typeof cart !== 'undefined') {
     localStorage.setItem(BC_CART_ID, cart.id)
   }
 

@@ -1,85 +1,57 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
-import { groq } from "next-sanity"
 import { Category, SubsectionArticles, CategoryFeature } from '../../types'
 
 import { Box, Container, Heading, Inline } from '@sanity/ui'
 import { NavBar, SubsectionBar } from '$components'
-import { handleBlockFeature } from '$helpers'
+import { handleBlockFeature, coalesceCampaignAndFeature } from '$utils/helpers'
 
 import { getClient, usePreviewSubscription } from '$utils/sanity'
 import { GiWomanElfFace } from 'react-icons/gi'
+import { categoryAndFeaturedArticleQuery, 
+         subsectionArticleQueryHasFeature,
+         subsectionArticleQueryNoFeature }  from '$utils/sanityGroqQueries'
 
-const categoryQuery = groq`
-  *[_type == 'category' && slug.current == $hub][0]
-    {
-      "categoryId": _id,
-      name,
-      featuredArticleDisplay,
-      featuredArticle->{
-        _id,
-        title,
-        text,
-        publishedDate,
-        "slug": slug.current,
-        "imageRef": heroImage.asset._ref,
-        "subsection": subsection->{name, "slug": slug.current},
-        "category": subsection->category->{name, "slug": slug.current},
-        excerpt
-      }
-    }`
 
-const subsectionArticleQuery = groq`
-  *[_type == 'subsection' && category._ref == $id]
-    {
-      name,
-      "slug": slug.current,
-      "articles": *[_type == 'article' 
-    && references(^._id) && _id != $featuredArticleId] 
-        | order('publishedDate' desc)[0...2]{
-           _id,
-           title,
-           publishedDate,
-           "slug": slug.current,
-           "imageRef": heroImage.asset._ref,
-           "subsection": subsection->{name, "slug": slug.current},
-           "category": subsection->category->{name, "slug": slug.current},
-        }
-    }`
-
-export default function Hub({categories, subsectionArticleData, categoryFeature, preview}
+export default function Hub({categories, subsectionArticleData, categoryData, preview}
   : {categories: Category[],
     subsectionArticleData: SubsectionArticles[],
-    categoryFeature: CategoryFeature,
+    categoryData: CategoryFeature,
     preview: boolean}) {
 
   const router = useRouter()
   const hub = router.query.hub ?? ""
 
-  const {data: category} = usePreviewSubscription(categoryQuery, {
+  const {data: category} = usePreviewSubscription(categoryAndFeaturedArticleQuery, {
     params: {hub: hub},
-    initialData: categoryFeature,
+    initialData: categoryData,
     enabled: preview || router.query.preview !== null,
   })
 
-
-  const featuredArticle = category.featuredArticle
-  const featureProps = {
-    title: featuredArticle.title,
-    text: (featuredArticle.excerpt) ? featuredArticle.excerpt : featuredArticle.text,
-    url: (featuredArticle.category) ?`${featuredArticle.category.slug}/${featuredArticle.subsection.slug}/${featuredArticle.slug}` : `shop/campaign/${featuredArticle.slug}`,
-    image:  featuredArticle.imageRef
+  let featuredArticleDisplay = (<span />) 
+  if (category.featuredArticle) {
+    const formattedFeature = coalesceCampaignAndFeature(category.featuredArticle)
+    featuredArticleDisplay = handleBlockFeature(category.featuredArticleDisplay, formattedFeature)
   }
 
-  const featuredArticleDisplay = handleBlockFeature(category.featuredArticleDisplay, featureProps)
 
+  //TODO: we could probably have more elegant handling for no features
+  let subsectionArticles = subsectionArticleData
+  if (category.featuredArticle) {
+    const {data: subsectionArticles} = usePreviewSubscription(subsectionArticleQueryHasFeature, {
+      params: {id: category.categoryId,
+             featuredArticleId: category.featuredArticle._id},
+      initialData: subsectionArticleData,
+      enabled: preview || router.query.preview !== null,
+    })
+  } else {
+    const {data: subsectionArticles} = usePreviewSubscription(subsectionArticleQueryNoFeature, {
+      params: {id: category.categoryId},
+      initialData: subsectionArticleData,
+      enabled: preview || router.query.preview !== null,
+    })
+  }
 
-  const {data: subsectionArticles} = usePreviewSubscription(subsectionArticleQuery, {
-    params: {id: category.categoryId,
-           featuredArticleId: category.featuredArticle._id},
-    initialData: subsectionArticleData,
-    enabled: preview || router.query.preview !== null,
-  })
 
   const subsectionRows = subsectionArticles
           .filter(sub => sub.articles.length)
@@ -110,7 +82,7 @@ export default function Hub({categories, subsectionArticleData, categoryFeature,
 }
 
 export const getStaticPaths: GetStaticPaths = async (context) => {
-  //TODO -- add campaign, which would also live at this level of slug
+
   const categories = await getClient().fetch(
     `*[_type == "category"].slug.current`)
 
@@ -123,17 +95,23 @@ export const getStaticPaths: GetStaticPaths = async (context) => {
 export const getStaticProps: GetStaticProps = async ({params, preview = false }) => {
 
   const category = await getClient(preview).fetch(
-        categoryQuery, params)
+        categoryAndFeaturedArticleQuery, params)
 
-  const subsectionArticles = await getClient(preview).fetch(
-        subsectionArticleQuery, {id: category.categoryId,
+  let subsectionArticles;
+  if (category.featuredArticle) {
+    subsectionArticles = await getClient(preview).fetch(
+        subsectionArticleQueryHasFeature, {id: category.categoryId,
              featuredArticleId: category.featuredArticle._id})
+  } else {
+    subsectionArticles = await getClient(preview).fetch(
+        subsectionArticleQueryNoFeature, {id: category.categoryId})
+  }
 
   return ({
     props: {
       categories: await getClient(preview).fetch(`*[_type == "category"]{name,'slug': slug.current}`),
       subsectionArticleData: subsectionArticles,
-      categoryFeature: category,
+      categoryData: category,
       preview
     }
   })

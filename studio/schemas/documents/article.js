@@ -58,12 +58,12 @@ export default {
       description:
         'This ends up on summary pages, on Google, when people share your post in social media.',
     },
-    {
-      title: "Include Author Block",
-      name: "includeAuthorBlock",
-      type: "boolean",
-      description: "Flag to include the authors' images and bio (note: bio only shows up for single authors)"
-    },
+    // {
+    //   title: "Include Author Block",
+    //   name: "includeAuthorBlock",
+    //   type: "boolean",
+    //   description: "Flag to include the authors' images and bio (note: bio only shows up for single authors)"
+    // },
     {
       title: 'Content', 
       name: 'content',

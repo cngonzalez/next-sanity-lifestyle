@@ -1,45 +1,13 @@
 import { GetStaticProps, GetStaticPaths } from 'next'
 import Error from 'next/error'
-import { groq } from 'next-sanity'
 import { useRouter } from 'next/router'
-
-import styled from 'styled-components'
 
 import { Stack, Card, Box, Heading, Text, Container, Flex } from '@sanity/ui'
 import { NavBar, SocialBar, Breadcrumbs, ShopTheStory } from '$components'
 import { Category, Article, ArticleSlug } from '../../../types'
 import { getClient, urlFor, PortableText, usePreviewSubscription } from '$utils/sanity'
-import { handleGroupedItems } from '$helpers'
-
-
-const articleQuery = groq`
-      *[_type == "article" && slug.current == $slug][0]{
-          title, 
-          "slug": slug.current,
-          authors,
-          "subsection": subsection->{name, "slug": slug.current},
-          "category": subsection->category->{name, "slug": slug.current},
-          "storyProducts": content[]{
-              _type == 'listItem' || _type == 'productsDisplay'=>{
-                products[]->{
-                  name, price, description, manufacturer,
-                  'slug': slug.current,
-                  'image': productImage.asset._ref
-                }
-              },
-            },
-          content[]{
-              ...,
-              _type == 'listItem' ||  _type == 'productsDisplay'=>{
-                products[]->{
-                  name, price, description, manufacturer,
-                  'slug': slug.current,
-                  'image': productImage.asset._ref
-                }
-              },
-            },
-            "image": {"asset": heroImage.asset, "crop": heroImage.crop, "hotspot": heroImage.hotspot}
-         }`
+import { handleGroupedItems } from '$utils/helpers'
+import { articlePageQuery }  from '$utils/sanityGroqQueries'
 
 
 export default function ArticlePage({categories, articleData, preview}
@@ -51,7 +19,7 @@ export default function ArticlePage({categories, articleData, preview}
   }
 
 
-  const {data: article} = usePreviewSubscription(articleQuery, {
+  const {data: article} = usePreviewSubscription(articlePageQuery, {
     params: {slug: articleData.slug},
     initialData: articleData,
     enabled: preview || router.query.preview !== null,
@@ -113,7 +81,7 @@ export const getStaticPaths: GetStaticPaths = async (context) => {
 
 export const getStaticProps: GetStaticProps = async ({params, preview = false}) => {
 
-  const article = await getClient(preview).fetch(articleQuery, params)
+  const article = await getClient(preview).fetch(articlePageQuery, params)
 
   return ({
     props: {

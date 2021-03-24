@@ -8,18 +8,19 @@ export type Subsection = {
   slug: string
 }
 
-export type Author = {
-  imageRef: string,
-  bio: string
-}
-
 export type Color = {
   hex: string
 }
 
+export type Image = {
+  _ref: string,
+  crop: any,
+  hotspot: any
+}
+
 export type Product = {
   _id: string,
-  image: string,
+  image: Image,
   name: string,
   slug: string,
   description: string,
@@ -32,7 +33,7 @@ export type Article = {
   _id: string?,
   title: string,
   slug: string,
-  imageRef: string
+  image: Image,
   subsection: Subsection,
   category: Category,
   publishedDate: string, //comes in from Sanity this way
@@ -70,18 +71,13 @@ export type ListItem = {
   products: Product[]
 }
 
-export type CategoryProducts = {
-  name: string,
-  products: Product[]
-}
-
 export type StoryProducts = {
   products: Product[]
 }
 
 export type Campaign = {
   slug: string,
-  image: string,
+  image: Image,
   title: string,
   text: any[] | any?,
   content: any[] | any?,
