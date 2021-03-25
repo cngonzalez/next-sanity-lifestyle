@@ -42,9 +42,11 @@ export default function ArticlePage({categories, articleData, preview}
                 style={{width: "100%", height: "100%", objectFit: "cover"}}/>
             </Box>
               <Box padding={[1, 3, 4]}>
-                <Heading size={[2, 3, 4]}>
-                  { article.title }
-                </Heading>
+                <Box paddingY={3}>
+                  <Heading size={[2, 3, 4]}>
+                    { article.title }
+                  </Heading>
+                </Box>
                 <Text>
                   <PortableText blocks={content} />
                 </Text>

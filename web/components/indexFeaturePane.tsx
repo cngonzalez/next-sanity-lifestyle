@@ -16,7 +16,7 @@ const PaneImage = styled.img`
   height: 100%;
   width: 100%;
   object-fit: cover;
-  opacity: 0.65;
+  opacity: 0.4;
 `
 
 const OverlayText = styled.div`

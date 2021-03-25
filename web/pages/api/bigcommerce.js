@@ -35,6 +35,16 @@ export default async function BigCommerceCart(req, res) {
         ...bigCommerceHeaders
       })
      .then(response => response.json());
+
+      //theres a cart ID in localStorage, but not found in BC, make a new one
+      if (bcCartResponse.status == 404) {
+        bcCartResponse = await fetch(`${process.env.BIGCOMMERCE_API_URL}/carts`, {
+             method: "POST",
+             ...bigCommerceHeaders,
+             body: JSON.stringify({line_items: []})
+         })
+         .then(response => response.json());
+      }
     }
 
     else if (req.method == 'PUT') {
@@ -59,12 +69,26 @@ body: body
            method: 'DELETE',
            ...bigCommerceHeaders
          })
-         .then(response => response.json());
+        
+          //per BC's docs, deleting the last line item deletes the cart https://developer.bigcommerce.com/api-reference/store-management/carts/cart-items/deletecartlineitem, so make a new one
+        if (bcCartResponse.status == 204) {
+          console.log('got the 204') 
+          bcCartResponse = await fetch(`${process.env.BIGCOMMERCE_API_URL}/carts`, {
+               method: "POST",
+               ...bigCommerceHeaders,
+               body: JSON.stringify({line_items: []})
+           })
+           .then(response => response.json());
+          } else {
+            bcCartResponse = bcCartResponse.json()
+          }
+      
       }
 
     else {
       return res.status(400).json({error: 'Invalid request method -- check the code in the BigCommerce context provider.'})
     }
+    
 
     //TODO: check status of bcCartResponse (400, etc.) and return meaningful message
     return res.status(200).json(bcCartResponse) 
