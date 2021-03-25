@@ -1,6 +1,15 @@
 import S from '@sanity/desk-tool/structure-builder'
 import client from 'part:@sanity/base/client'
-import { MdEdit, MdRemoveRedEye, MdStayPrimaryPortrait } from "react-icons/md"
+import { MdEdit,
+         MdRemoveRedEye,
+         MdStayPrimaryPortrait,
+         MdTune,
+         MdFormatAlignLeft,
+         MdPerson,
+         MdShoppingCart,
+         MdTrendingUp,
+         MdSettings
+} from "react-icons/md"
 import { IFramePreview, MobilePreview } from './preview'
 
 async function categoriesToListItems() {
@@ -87,18 +96,26 @@ async function buildList() {
       .items([
         S.listItem()
           .title('Site settings')
+          .icon(MdTune)
           .child(
             S.editor()
               .schemaType('siteSettings')
               .documentId('siteSettings')
+              .title('Index Page Settings')
           ),
-        S.divider(),
+         S.documentTypeListItem('subsection')
+          .title('Subsection options')
+          .icon(MdSettings),
+         S.divider(),
         ...await categoriesToListItems(),
          S.divider(), 
-         S.documentTypeListItem('person'),
+         S.documentTypeListItem('person')
+          .title('Authors')
+          .icon(MdPerson),
          S.divider(), 
          S.listItem()
-            .title("Shop")
+            .title('Shop')
+            .icon(MdShoppingCart)
             .child(
               S.documentTypeList('product')
                 .child(id => 
@@ -117,6 +134,8 @@ async function buildList() {
                 )
           ),
          S.documentTypeListItem('campaign')
+            .title('Campaigns')
+            .icon(MdTrendingUp)
             .child(
               S.documentTypeList('campaign')
                 .child(id => 
