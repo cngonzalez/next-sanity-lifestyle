@@ -52,8 +52,9 @@ export default function ProductPage({categories, productData, preview}
             </Text>
             <hr />
             <Button text='Add to Bag' mode='ghost' 
-              onClick={() => addItemToCart(product._id)}
-            /> 
+              //don't let people add NON BigCommerce (e.g., test) items!
+              disabled={ product._id.search('imported-BC')}
+              onClick={() => addItemToCart(product._id)} />
             <hr /> 
             <Heading size={1}>
               Product Details

@@ -53,7 +53,8 @@ export default function ArticlePage({categories, articleData, preview}
           </Box>
          <Flex align='center' flex={[0, 0, 0, 1]}>
            <Box>
-             <ShopTheStory products={article.storyProducts} />
+             { article.storyProducts && (
+             <ShopTheStory products={article.storyProducts} /> ) }
           </Box>
          </Flex>
         </Flex>

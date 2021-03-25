@@ -14,7 +14,7 @@ export function SolidBlockFeature(
                               minWidth: '350px' }
 
     const solidBlock = (
-        <Flex flex={1} justify='center' direction='column'
+        <Flex flex={1} key='text' justify='center' direction='column'
           style={solidBlockStyle}>
 
 
@@ -39,7 +39,7 @@ export function SolidBlockFeature(
     )
 
     const imageBlock =  (
-        <Box flex={1} style={{ minWidth: '350px', minHeight: '350px', maxHeight: "500px"}}>  
+        <Box flex={1} key='image' style={{ minWidth: '350px', minHeight: '350px', maxHeight: "500px"}}>  
           <img style={{height: '100%', width: '100%', objectFit: "cover"}}
                src={urlFor(image)}/>
         </Box>

@@ -1,23 +1,29 @@
 import { Grid, Box } from '@sanity/ui'
-import { Article } from '../types'
+import { Feature } from '../types'
 import { urlFor } from '$utils/sanity'
+import { IndexFeaturePane } from '$components'
 
-export function IndexArticleGrid({articles}: {articles: Article[]}) {
+export function IndexArticleGrid({features}: {features: Feature[]}) {
 
   return (
 
-    <Grid columns={[1, 1, 3]} rows={[3, 3, 2]} style={{maxHeight: '600px'}}>
+    <Grid 
+      columns={[1, 1, 3]} 
+      rows={[3, 3, 2]} 
+      gap={[1, 1, 2, 4]}
+      style={{maxHeight: '600px'}}>
 
       <Box columnStart={1} columnEnd={[1, 1, 3]} rowStart={1} rowEnd={[1,1,3]}>
-        <img src={urlFor(articles[0].imageRef) } 
-          style={{width: "100%", height: "100%", objectFit: "cover"}}/>
+        <IndexFeaturePane feature={features[0]} headingSize={4} />
       </Box>  
-      { articles[1] && (
+      { features[1] && (
+        <IndexFeaturePane feature={features[1]} headingSize={2} />
+        ) 
+      }
 
-      <Box columnStart={[1,1,3]} columnEnd={[1, 1, 3]} rowStart={[2,2,1]} rowEnd={2}>
-        <img src={urlFor(articles[1].imageRef) } 
-          style={{width: "100%", height: "100%", objectFit: "cover"}}/>
-      </Box>) 
+      { features[2] && (
+        <IndexFeaturePane feature={features[2]} headingSize={2} />
+        ) 
       }
 
     </Grid> 

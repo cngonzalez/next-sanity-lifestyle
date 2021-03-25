@@ -2,8 +2,8 @@ import {  Text, Box, Inline, Heading, Button } from '@sanity/ui'
 import { urlFor } from '$utils/sanity'
 import { ResponsiveFixedRatioImage } from '$components'
 import { BsTrash2 } from 'react-icons/bs'
-import { Product } from '../../types'
-import { useDeleteItem } from '../../contexts/bigcommerce-context'
+import { Product } from '../types'
+import { useDeleteItem } from '../contexts/bigcommerce-context'
 
 export function CartProductDisplay({product}: {product: Product}) {
 
@@ -26,11 +26,14 @@ export function CartProductDisplay({product}: {product: Product}) {
             <span style={{fontSize: '.8em'}}>
               ${product.price}<br/>
             </span>
+            <span style={{fontSize: '.8em'}}>
+              Quantity: {product.quantity}<br/>
+            </span>
           </Text>
         </Box>
          <Box flex={1} paddingX={1}>
            <Button mode='bleed'
-              onClick={() => deleteItem(product._id)}>
+              onClick={() => deleteItem(product.lineID)}>
              <Heading size={1}>
               <BsTrash2 />
              </Heading>

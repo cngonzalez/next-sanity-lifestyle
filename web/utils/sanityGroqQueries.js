@@ -29,7 +29,19 @@ export const articleDisplayQuery = `
 /* ------------ */
 /* Page queries */
 /* ------------ */
-// const indexQuery
+
+
+export const indexQuery =  `
+{"featuredArticles": *[_type == 'siteSettings'][0]{featuredArticles[]->{
+    ${articleDisplayQuery}
+      }}.featuredArticles[],
+    "recentArticles": *[_type == 'article'] | order(publishedDate desc)[0...20]{
+      ${articleDisplayQuery}
+    },
+  }
+
+`
+
 export const categoryAndFeaturedArticleQuery = groq`
   *[_type == 'category' && slug.current == $hub][0]
     {

@@ -42,6 +42,13 @@ export type Article = {
   content: any[] | any?
 }
 
+export type Feature = {
+  title: string,
+  text: any | any[],
+  image: Image,
+  url: string
+}
+
 export type ArticleSlug = {
   slug: string,
   subhub: string,

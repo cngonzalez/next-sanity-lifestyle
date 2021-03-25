@@ -6,33 +6,10 @@ import { Card, Container, Flex, Stack, Text } from '@sanity/ui'
 
 import { Category, Article } from '../types'
 import { getClient, usePreviewSubscription } from '$utils/sanity'
+import { coalesceCampaignAndFeature } from '$utils/helpers'
 import { IndexArticleGrid, NavBar, SubsectionBar } from '$components'
+import { indexQuery } from '$utils/sanityGroqQueries'
 
-const indexQuery = groq`
-{"featuredArticles": *[_type == 'siteSettings'][0]{featuredArticles[]->{
-        _id,
-        title,
-        text,
-        "slug": slug.current,
-        "imageRef": heroImage.asset._ref,
-        "subsection": subsection->{name, "slug": slug.current},
-        "category": subsection->category->{name, "slug": slug.current},
-        excerpt,
-        publishedDate
-      }}.featuredArticles[],
-    "recentArticles": *[_type == 'article'] | order(publishedDate desc)[0...20]{
-        _id,
-        title,
-        text,
-        "slug": slug.current,
-        "imageRef": heroImage.asset._ref,
-        "subsection": subsection->{name, "slug": slug.current},
-        "category": subsection->category->{name, "slug": slug.current},
-        excerpt,
-        publishedDate
-      },
-  }
-`
 
 function IndexPage({categories, featuredArticleData, recentArticleData, preview}
   : {categories: Category[], featuredArticleData: Article[], recentArticleData: Article[], preview: boolean}) {
@@ -59,6 +36,8 @@ function IndexPage({categories, featuredArticleData, recentArticleData, preview}
     ]
   }
 
+  const formattedFeatures = supplementedFeatures.map(feat => coalesceCampaignAndFeature(feat))
+
   const articlesByMonth = []
   recentArticles.forEach(article => {
     const date = new Date(article.publishedDate)
@@ -78,10 +57,10 @@ function IndexPage({categories, featuredArticleData, recentArticleData, preview}
   return (
     <>
       <NavBar categories={categories} />
-      <Card flex={1} paddingX={[3, 4, 5]} paddingY={[5, 6, 7, 8]}>
+      <Card flex={1} paddingX={[3, 4, 5]} paddingY={[3, 4, 5]}>
         <Stack space={[3, 4, 5]}>
+          <IndexArticleGrid features={formattedFeatures} /> 
           <Container width={1}>
-            <IndexArticleGrid articles={supplementedFeatures} /> 
             { articlesByMonth.map((month, i) => (
               <SubsectionBar hub="" subsectionArticles={month} key={i} />
             ))}

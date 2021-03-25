@@ -6,6 +6,11 @@ const bigCommerceHeaders = {
   }
 }
 
+export const config = {
+  api: {
+    bodyParser: true,
+  },
+}
 export default async function BigCommerceCart(req, res) {
 
   const { query: {cartID, itemID}, body } = req
@@ -40,8 +45,9 @@ export default async function BigCommerceCart(req, res) {
       bcCartResponse =  await fetch(`${process.env.BIGCOMMERCE_API_URL}/carts/${cartID}/items`, {
            method: 'POST',
            ...bigCommerceHeaders,
-           body: JSON.stringify(body)
+body: body 
          })
+         .then(response => response.json());
       }
 
     else if (req.method == 'DELETE') {
@@ -53,12 +59,13 @@ export default async function BigCommerceCart(req, res) {
            method: 'DELETE',
            ...bigCommerceHeaders
          })
+         .then(response => response.json());
       }
 
     else {
       return res.status(400).json({error: 'Invalid request method -- check the code in the BigCommerce context provider.'})
     }
-//
+
     //TODO: check status of bcCartResponse (400, etc.) and return meaningful message
     return res.status(200).json(bcCartResponse) 
 

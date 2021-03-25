@@ -160,7 +160,7 @@ function useAddItem() {
     const BCItem = {
       //variant_id is required by BC products with variants
       //be sure to add it in your use case!
-      product_id: sanityProductID.replace('imported-BC-', ''),
+      product_id: parseInt(sanityProductID.replace('imported-BC-', '')),
       quantity: 1
     }
 

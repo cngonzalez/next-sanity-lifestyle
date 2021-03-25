@@ -10,6 +10,7 @@ export function handleGroupedItems(content, key, additionalFilter) {
   let finalBlocks = []
   let verticalGroup = {_key: null, _type: `${key}Group`, children: []}
   let startingItem = null
+  if (!content) { return [] }
 
   content.forEach((block, i) => {
     if (block._type == key && block[additionalFilter._key] == additionalFilter._value) {
